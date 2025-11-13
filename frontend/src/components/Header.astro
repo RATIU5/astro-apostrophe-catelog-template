@@ -2,7 +2,25 @@
 import { useSiteConfig } from '../lib/use-site-config.js';
 
 const { aposData } = Astro.props;
-const mainNav = aposData.home?._children || [];
+
+// Fetch top-level categories (no parent category) for navigation
+const aposHost = import.meta.env.APOS_HOST || 'http://localhost:3000';
+let categories = [];
+try {
+  const categoriesResponse = await fetch(
+    `${aposHost}/api/v1/category?_parentCategory:exists=false`,
+    {
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    }
+  );
+  const categoriesData = await categoriesResponse.json();
+  categories = categoriesData.results || [];
+} catch (error) {
+  console.error('Failed to fetch categories for navigation:', error);
+}
+
 const {
   getNavItemClasses,
   getDropdownClasses,
@@ -11,13 +29,13 @@ const {
   getHeaderTransparency
 } = useSiteConfig(aposData.global);
 
-function formatNavItem(page) {
-  if (!page) return null;
+function formatNavItem(category) {
+  if (!category) return null;
   return {
-    title: page.title || '',
-    url: page._url || '#',
-    active: page._url === aposData.page?._url,
-    children: page._children?.map(formatNavItem).filter(Boolean) || []
+    title: category.title || '',
+    url: category._url || '#',
+    active: category._url === aposData.page?._url,
+    children: [] // No sub-categories in nav
   };
 }
 
@@ -38,7 +56,7 @@ const addFixedHeaderClass = () => {
   return fixedHeader.toString();
 };
 
-const navItems = mainNav.map(formatNavItem).filter(Boolean);
+const navItems = categories.map(formatNavItem).filter(Boolean);
 
 const shouldShowItems = navItems.length > 0;
 ---

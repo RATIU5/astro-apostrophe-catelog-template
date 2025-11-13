@@ -1,33 +1,5 @@
 ---
-import AposLayout from '@apostrophecms/apostrophe-astro/components/layouts/AposLayout.astro';
-import AposArea from '@apostrophecms/apostrophe-astro/components/AposArea.astro';
-
-const { page, pieces } = Astro.props.aposData;
+// This template should never be rendered as the index page redirects to home
+// Placeholder to prevent errors
 ---
-
-<AposLayout title={page.title} {...Astro.props}>
-  <Fragment slot="main">
-    <!-- Masthead Area -->
-    {page.masthead && <AposArea area={page.masthead} />}
-
-    <!-- Before Products Area -->
-    {page.beforeProducts && <AposArea area={page.beforeProducts} />}
-
-    <!-- Products Grid/List -->
-    <section class="products-section">
-      <div class={`products-${page.indexLayout || 'grid'}`}>
-        
-      </div>
-    </section>
-
-    <!-- After Products Area -->
-    {page.afterProducts && <AposArea area={page.afterProducts} />}
-
-    <!-- Pagination -->
-    {Astro.props.aposData.totalPages > 1 && (
-      <nav class="pagination">
-        {/* Add pagination links here */}
-      </nav>
-    )}
-  </Fragment>
-</AposLayout>
+<div>Redirecting...</div>
