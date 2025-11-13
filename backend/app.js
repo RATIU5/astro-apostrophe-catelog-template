@@ -28,7 +28,7 @@ export default apostrophe({
     '@apostrophecms/seo': {},
 
     // pieces
-    'product-category': {},
+    category: {},
     product: {},
 
     // pages
