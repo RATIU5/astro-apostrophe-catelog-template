@@ -1,0 +1,105 @@
+---
+import AposLayout from '@apostrophecms/apostrophe-astro/components/layouts/AposLayout.astro';
+import AposArea from '@apostrophecms/apostrophe-astro/components/AposArea.astro';
+
+const { piece: product } = Astro.props.aposData;
+---
+
+<AposLayout title={product.title} {...Astro.props}>
+  <Fragment slot="main">
+    <article class="product-detail">
+      
+      <!-- Image Gallery -->
+      <div class="product-gallery">
+        {product._images?.map((image, index) => (
+          <img
+            src={image.attachment._urls['full']}
+            alt={image.alt || product.title}
+            class={index === 0 ? 'active' : ''}
+          />
+        ))}
+      </div>
+
+      <!-- Product Info -->
+      <div class="product-info">
+        <h1>{product.title}</h1>
+        
+        <!-- Description -->
+        <AposArea area={product.description} />
+
+        <!-- Features -->
+        {product.features?.length > 0 && (
+          <ul class="features">
+            {product.features.map(feature => (
+              <li>{feature.text}</li>
+            ))}
+          </ul>
+        )}
+
+        <!-- Variant Selector -->
+        
+      </div>
+
+      <!-- Dimensions Table -->
+      
+
+      <!-- Specifications -->
+      {product.specifications?.length > 0 && (
+        <section class="specifications">
+          <h2>Product Information</h2>
+          {product.specifications.map(group => (
+            <div class="spec-group">
+              <h3>{group.groupName}</h3>
+              {group.items?.map(item => (
+                <div class="spec-item">
+                  {item.label && <strong>{item.label}</strong>}
+                  <span>{item.value}</span>
+                </div>
+              ))}
+            </div>
+          ))}
+        </section>
+      )}
+
+    </article>
+  </Fragment>
+</AposLayout>
+
+<script>
+  // Variant selection logic
+  const form = document.querySelector('.variant-selector');
+  if (form) {
+    const variants = JSON.parse(form.dataset.productVariants);
+    const selects = form.querySelectorAll('[data-option]');
+    const priceEl = form.querySelector('[data-variant-price]');
+
+    function findVariant() {
+      const selected = {};
+      selects.forEach(sel => {
+        if (sel.value) selected[sel.name] = sel.value;
+      });
+
+      const allSelected = Array.from(selects).every(s => s.value);
+      if (!allSelected) return null;
+
+      return variants.find(v => 
+        Object.entries(selected).every(([key, val]) => 
+          v.options[key] === val
+        )
+      );
+    }
+
+    function update() {
+      const variant = findVariant();
+      
+      if (variant) {
+        priceEl.textContent = `$${variant.price.toFixed(2)}`;
+      } else {
+        priceEl.textContent = '';
+      }
+    }
+
+    selects.forEach(sel => sel.addEventListener('change', update));
+
+  }
+</script>

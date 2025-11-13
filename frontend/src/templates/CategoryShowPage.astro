@@ -1,0 +1,25 @@
+---
+import AposLayout from '@apostrophecms/apostrophe-astro/components/layouts/AposLayout.astro';
+
+const { piece: category } = Astro.props.aposData;
+---
+
+<AposLayout title={category.title} {...Astro.props}>
+  <Fragment slot="main">
+    <article class="category-detail">
+
+      <!-- Category Info -->
+      <div class="category-info">
+        <h1>{category.title}</h1>
+
+        <!-- Description -->
+        {category.description && (
+          <div class="category-description">
+            <p>{category.description}</p>
+          </div>
+        )}
+      </div>
+
+    </article>
+  </Fragment>
+</AposLayout>

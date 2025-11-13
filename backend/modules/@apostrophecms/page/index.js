@@ -18,8 +18,12 @@ export default {
         label: 'Default'
       },
       {
-        name: 'article-page',
-        label: 'Article Page'
+        name: 'product-page',
+        label: 'Product Page'
+      },
+      {
+        name: 'category-page',
+        label: 'Category Page'
       },
       {
         name: '@apostrophecms/home-page',

@@ -28,12 +28,13 @@ export default apostrophe({
     '@apostrophecms/seo': {},
 
     // pieces
-    article: {},
-    author: {},
+    'product-category': {},
+    product: {},
 
     // pages
     'default-page': {},
-    'article-page': {},
+    'product-page': {},
+    'category-page': {},
 
     // widgets
     'grid-layout-widget': {},

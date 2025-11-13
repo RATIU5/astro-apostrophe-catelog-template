@@ -2,6 +2,14 @@ export default {
   options: {
     groups: [
       {
+        name: 'products',
+        label: 'Products',
+        items: [
+          'product',
+          'product-category'
+        ]
+      },
+      {
         name: 'media',
         label: 'Media',
         items: [
@@ -9,14 +17,6 @@ export default {
           '@apostrophecms/file',
           '@apostrophecms/image-tag',
           '@apostrophecms/file-tag'
-        ]
-      },
-      {
-        name: 'blog',
-        label: 'Blog',
-        items: [
-          'article',
-          'author'
         ]
       }
     ]
