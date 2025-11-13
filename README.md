@@ -1,132 +1,67 @@
-# Apollo Starter Kit for ApostropheCMS + Astro Integration
+# Product Catalog Starter Kit for ApostropheCMS + Astro
 
-**Build lightning-fast websites with the editing experience your content team actually wants to use.**
+**Build flexible product and category systems with the editing experience your content team actually wants to use.**
 
-A production-ready template combining [ApostropheCMS](https://docs.apostrophecms.org/) as a headless backend with [Astro](https://astro.build/) as a modern frontend framework. This template includes a beautiful design system and rich content features, all completely free and open source.
+A production-ready template combining [ApostropheCMS](https://docs.apostrophecms.org/) as a headless backend with [Astro](https://astro.build/) as a modern frontend framework. This template includes a flexible product and category system with composable widgets, enabling content editors to create rich, dynamic product pages.
 
 ## ✨ What Makes This Special
 
+- **🛍️ Flexible Product System** - Rich product data with variants, specifications, and custom information tables
+- **📂 Hierarchical Categories** - Two-level category hierarchy with parent-child relationships
+- **🧩 Composable Widgets** - 9 section widgets for building custom product and category pages
 - **🚀 Headless CMS with Frontend Integration** - Full ApostropheCMS Admin UI with in-context editing
-- **⚡ Modern Frontend** - Astro for optimal performance and developer experience  
-- **🎨 Production Styled** - Beautiful Bulma-based design system included
+- **⚡ Modern Frontend** - Astro for optimal performance and developer experience
 - **📱 Fully Responsive** - Mobile-first approach with modern web standards
 - **💰 Completely Free** - No license fees, perfect for any project size
 
-## ApostropheCMS + Astro Starter Kits
-
-**Choose the right foundation for your project:**
-
-## 🌟 Apollo Starter Kit (This Repository)
-**Perfect if you want:** A production-ready foundation with beautiful design included
-
-- **Production-Ready Design**: Complete Bulma-based design system with modern styling
-- **Rich Feature Set**: Advanced widgets, layouts, and pre-styled components
-- **Faster Time-to-Market**: Launch professional sites with minimal additional styling
-- **Content-Rich Sites**: Built-in blog, author relationships, and content management features
-- **Best for**: Teams who want to focus on content and functionality over design from scratch
-
-## 🎯 [Astro Essentials Starter Kit](https://github.com/apostrophecms/starter-kit-astro-essentials)
-**Perfect if you want:** A clean, minimal foundation to build your own design system
-
-- **Minimal & Non-opinionated**: Essential building blocks without imposed design decisions
-- **Core Components**: Basic page types, essential widgets, and clean architecture  
-- **Maximum Flexibility**: Build your own styling approach and component library
-- **Learning Focus**: Understand the ApostropheCMS + Astro integration from the ground up
-- **Best for**: Developers who want full creative control and custom design systems
-
----
-
-**Ready for enterprise features?** [Upgrade to Apollo Pro](https://apostrophecms.com/contact-us) for advanced permissions, automated translations, SEO optimization, document versioning, and more professional capabilities.
-
 ## Table of Contents
-<!-- TOC -->
-- [Apollo Starter Kit for ApostropheCMS + Astro Integration](#apollo-starter-kit-for-apostrophecms--astro-integration)
-  - [✨ What Makes This Special](#-what-makes-this-special)
-  - [ApostropheCMS + Astro Starter Kits](#apostrophecms--astro-starter-kits)
-  - [🌟 Apollo Starter Kit (This Repository)](#-apollo-starter-kit-this-repository)
-  - [🎯 Astro Essentials Starter Kit](#-astro-essentials-starter-kit)
-  - [Table of Contents](#table-of-contents)
-  - [Introduction](#introduction)
-  - [🚀 Getting Started](#-getting-started)
-    - [Prerequisites](#prerequisites)
-    - [Quick Start](#quick-start)
-    - [Alternative: Empty Database Setup](#alternative-empty-database-setup)
-  - [🏗️ Project Architecture](#️-project-architecture)
-    - [How It Works](#how-it-works)
-    - [Project Structure](#project-structure)
-    - [For ApostropheCMS Developers](#for-apostrophecms-developers)
-    - [For Astro Developers](#for-astro-developers)
-    - [Routing and Templates](#routing-and-templates)
-    - [Widget Flexibility](#widget-flexibility)
-    - [Configuration Notes](#configuration-notes)
-  - [🌟 Features \& Widgets](#-features--widgets)
-    - [Widgets](#widgets)
-    - [Pieces](#pieces)
-    - [Pages](#pages)
-  - [🖼️ Image Helper Functions](#️-image-helper-functions)
-    - [Overview](#overview)
-    - [Working with Image Relationships](#working-with-image-relationships)
-    - [Working with Direct Attachments](#working-with-direct-attachments)
-    - [Image Cropping and Sizes](#image-cropping-and-sizes)
-    - [Working with Focal Points](#working-with-focal-points)
-    - [Core Functions Reference](#core-functions-reference)
-  - [🖌️ Theming](#️-theming)
-    - [Steps to Customize](#steps-to-customize)
-    - [Example: Overriding Common Variables](#example-overriding-common-variables)
-    - [Full List of Variables](#full-list-of-variables)
-    - [Notes](#notes)
-    - [Troubleshooting](#troubleshooting)
-  - [⚙️ Package scripts](#️-package-scripts)
-    - [Root `package.json` scripts](#root-packagejson-scripts)
-    - [Frontend folder scripts](#frontend-folder-scripts)
-    - [Backend folder scripts](#backend-folder-scripts)
-  - [🚀 Deploying to production](#-deploying-to-production)
-    - [**Using ApostropheCMS hosting (Recommended)**](#using-apostrophecms-hosting-recommended)
-    - [**Using 3rd-party hosting**](#using-3rd-party-hosting)
-      - [Backend (ApostropheCMS) Deployment](#backend-apostrophecms-deployment)
-      - [Frontend (Astro) Deployment](#frontend-astro-deployment)
-      - [Netlify Deployment Example](#netlify-deployment-example)
-  - [💎 Ready for More?](#-ready-for-more)
-    - [🚀 **Apollo Pro Features**](#-apollo-pro-features)
-  - [🚑 Need Help?](#-need-help)
-  - [📚 Learn More](#-learn-more)
-  - [License](#license)
 
+- [Introduction](#introduction)
+- [🚀 Getting Started](#-getting-started)
+  - [Prerequisites](#prerequisites)
+  - [Quick Start](#quick-start)
+- [📦 Product & Category System](#-product--category-system)
+  - [Creating Products](#creating-products)
+  - [Creating Categories](#creating-categories)
+  - [Using Product Variants](#using-product-variants)
+  - [Adding Dynamic Sections](#adding-dynamic-sections)
+- [🎨 Creating Templates](#-creating-templates)
+  - [Understanding Templates](#understanding-templates)
+  - [Creating a Product Template](#creating-a-product-template)
+  - [Creating a Category Template](#creating-a-category-template)
+  - [Linking Templates to Content](#linking-templates-to-content)
+- [🧩 Widget System](#-widget-system)
+  - [Available Widgets](#available-widgets)
+  - [Creating Custom Widgets](#creating-custom-widgets)
+- [🏗️ Project Architecture](#️-project-architecture)
+- [🖼️ Image Helper Functions](#️-image-helper-functions)
+- [⚙️ Package Scripts](#️-package-scripts)
+- [🚀 Deploying to Production](#-deploying-to-production)
 
 ## Introduction
-Overall, this project utilizes ApostropheCMS as a headless backend with Astro as a frontend. What sets this apart from the typical headless use of ApostropheCMS is the addition of a package, [apostrophe-astro](https://github.com/apostrophecms/apostrophe-astro) in the Astro frontend project. This allows for full use of the ApostropheCMS Admin UI, including in-context editing. At the same time, this package also largely automates and simplifies fetching content from the ApostropheCMS backend without writing REST API calls into your code.
+
+This project utilizes ApostropheCMS as a headless backend with Astro as a frontend, featuring the [apostrophe-astro](https://github.com/apostrophecms/apostrophe-astro) package. This enables full use of the ApostropheCMS Admin UI, including in-context editing, while providing a flexible product and category system for building e-commerce and catalog sites.
 
 ## 🚀 Getting Started
 
 ### Prerequisites
+
 **Required:**
 - Node.js v20 or later (v22 recommended)
 - MongoDB v6.0 or later (local server or Atlas). See the [ApostropheCMS documentation](https://docs.apostrophecms.org/guide/development-setup.html) for setup.
 
 **Windows Users:**
-- Windows Subsystem for Linux 2 (WSL2) required for Apostrophe development. This ensures consistent behavior with image processing tools and file system operations. Learn more about setting up WSL2 from [Microsoft](https://learn.microsoft.com/en-us/windows/wsl/install) and in our [documentation](https://docs.apostrophecms.org/cookbook/windows-development.html).
+- Windows Subsystem for Linux 2 (WSL2) required for Apostrophe development. Learn more from [Microsoft](https://learn.microsoft.com/en-us/windows/wsl/install) and in our [documentation](https://docs.apostrophecms.org/cookbook/windows-development.html).
 
 ### Quick Start
-
-The codebases located in the `backend` and `frontend` folders should be treated as interlinked but separate projects.
-
-To simplify dependency management, this repository includes several root-level scripts for convenience. The `postinstall` script automatically installs dependencies for both the `frontend` and `backend` folders when you run `npm install` at the root.
 
 1. **Install dependencies**
    ```bash
    npm install
    ```
 
-2. **Load starter content** (optional, but recommended)
-   ```bash
-   npm run load-starter-content
-   ```
-   This fetches a starter database and media files. You'll be prompted to set an admin password.
-
-3. **Start development servers**
+2. **Start development servers**
    Open two terminals:
-   - **Mac/Linux users**: One terminal in `frontend` folder, one in `backend` folder
-   - **Windows users**: WSL terminal for `backend` folder, WSL or Windows terminal for `frontend` folder
 
    ```bash
    # Terminal 1 - Backend (use WSL on Windows)
@@ -136,442 +71,654 @@ To simplify dependency management, this repository includes several root-level s
    cd frontend && npm run dev
    ```
 
-   > **That's it!** The `npm run dev` scripts automatically handle authentication between the frontend and backend in development mode setting the `APOS_EXTERNAL_FRONT_KEY` to "dev". For production or when you are starting your frontend or backend with a different command you will have to set this environment variable to the same value for both.
+Your site will be available at `http://localhost:4321` (Astro frontend). The ApostropheCMS admin is accessible at `http://localhost:3000/login`.
 
-   **Optional:** If running the backend on a different server/port, set the frontend's backend URL:
-   ```bash
-   # In the frontend terminal only
-   export APOS_HOST=your-backend-url
-   ```
+## 📦 Product & Category System
 
-Your site will be available at `http://localhost:4321` (Astro frontend). The ApostropheCMS backend will be available at `http://localhost:3000`, but it just gives notification of whether it is connected to the Astro frontend. In most cases you never need to access this page.
+### Creating Products
 
-> **Note:** Astro is less stringent about project setup in development mode. Before deployment, run `npm run build` followed by `npm run preview` in the `frontend` folder to test production behavior. We don't recommend using the root `npm run serve-frontend` script during development - it's used for ApostropheCMS hosting.
+Products are the main content type for your catalog. Each product can have rich data including images, variants, specifications, and dynamic sections.
 
-### Alternative: Empty Database Setup
-⚠️ If you prefer to start with an empty database instead of the starter content you will need to add an admin user:
+**To create a product:**
 
-```bash
-cd backend
-node app @apostrophecms/user:add admin admin
-```
-This creates a user named `admin` with the correct privileges. You will be asked to enter a password.
+1. Log in to the ApostropheCMS admin at `http://localhost:3000/login`
+2. Click **Products** in the admin bar
+3. Click **New Product**
+4. Fill in the product information:
 
+#### Basic Information
+- **Title**: Product name (required)
+- **Description**: Rich-text description of the product
+- **Category**: Select one category (required)
+
+#### Images
+- Click **Add Item** to add product images (max 15)
+- For each image:
+  - Upload the image via the image widget
+  - Add **Alt Text** (required for accessibility)
+  - Check **Primary Image** for the main product image
+- The first image with `isPrimary` checked will be the featured image
+- Other images display as thumbnails in the gallery
+
+#### Product Details
+
+**Specifications**: Key-value pairs for product specs
+- Click **Add Item** to add a specification row
+- **Specification Name**: e.g., "Material", "Weight", "Dimensions"
+- **Value**: e.g., "Cotton", "2.5 lbs", "10 x 8 x 6 inches"
+
+**Information Table**: Complex data table with custom rows and columns
+- **Table Title**: Name for your table (e.g., "Size Chart", "Compatibility Matrix")
+- **Column Names**: Click **Add Item** for each column header
+- **Row Names**: Click **Add Item** for each row header
+- **Cell Values**: Click **Add Item** for each cell
+  - **Row Number**: Zero-indexed (0 = first row)
+  - **Column Number**: Zero-indexed (0 = first column)
+  - **Cell Value**: The data for this cell
+  - **Label**: Description for admin UI (e.g., "Row 2, Column 3")
+
+**Features**: Rich-text area for bullet points or feature descriptions
+
+**Variants**: Product options with different pricing
+- Click **Add Item** to add a variant
+- **Size**: e.g., "Small", "Medium", "Large"
+- **Color**: e.g., "Red", "Blue", "Green"
+- **Thickness**: e.g., "Thin", "Standard", "Heavy"
+- **Other Options**: Additional options as text
+- **Price**: Variant price (required)
+- **SKU**: Stock Keeping Unit (required, must be unique)
+- **Option Values**: Comma-separated values for tracking
+
+#### Page Sections
+- Add dynamic content widgets (Hero, CTA, Testimonials, FAQ, etc.)
+- Widgets are rendered below the product information
+- Use the **Show this section** checkbox to hide/show widgets without deleting
+
+5. Click **Save Draft** to save without publishing, or **Publish** to make it live
+
+### Creating Categories
+
+Categories organize products into hierarchical groups (max 2 levels: parent → child).
+
+**To create a category:**
+
+1. Go to **Categories** in the admin bar
+2. Click **New Category**
+3. Fill in the category information:
+
+#### Basic Information
+- **Title**: Category name (required)
+- **URL Slug**: Auto-generated from title, editable
+- **Description**: Rich-text description of the category
+- **Category Image**: Single image for the category hero
+
+#### Category Hierarchy
+- **Parent Category**: Select a parent (leave empty for top-level)
+  - Top-level: No parent (e.g., "Furniture")
+  - Child level: Has a parent (e.g., "Chairs" under "Furniture")
+  - Max 2 levels supported
+
+#### Page Sections
+- **Global Sections**: CTA and Testimonials widgets
+- **Category-Specific**: Product Grid, Hero Section, Featured Content
+- The Product Grid widget automatically shows products from this category
+
+4. Click **Save Draft** or **Publish**
+
+### Using Product Variants
+
+Variants allow a single product to have multiple options with different pricing.
+
+**Example: T-Shirt with sizes and colors**
+
+Variant 1:
+- Size: "Small"
+- Color: "Red"
+- Price: 19.99
+- SKU: "TSHIRT-SM-RED"
+
+Variant 2:
+- Size: "Large"
+- Color: "Blue"
+- Price: 22.99
+- SKU: "TSHIRT-LG-BLUE"
+
+The product page will display:
+- "Starting at $19.99" (lowest variant price)
+- All variants listed with their options and prices
+
+### Adding Dynamic Sections
+
+Both products and categories support dynamic sections for flexible page layouts.
+
+**Product Section Widgets:**
+- Hero Section
+- Testimonials Section
+- FAQ Section
+- Specifications Display
+- Image Gallery Section
+- CTA Section
+- Related Products
+
+**Category Section Widgets (additional):**
+- Product Grid (shows products from the category)
+- Featured Content
+
+**To add a section:**
+1. Scroll to **Page Sections** in the product/category editor
+2. Click the **+** button
+3. Select a widget from the groups
+4. Configure the widget fields
+5. Use the **Show this section** checkbox to control visibility
+
+## 🎨 Creating Templates
+
+### Understanding Templates
+
+Templates in this project are Astro components that render specific page types from ApostropheCMS. Each template corresponds to a piece type or page type.
+
+**Template Types:**
+
+1. **Show Templates**: Display individual items (e.g., single product)
+   - File naming: `ProductShowPage.astro`, `CategoryShowPage.astro`
+   - Template key: `'product-page:show'`, `'category-page:show'`
+
+2. **Index Templates**: Display lists of items (e.g., all products)
+   - File naming: `ProductIndexPage.astro`, `CategoryIndexPage.astro`
+   - Template key: `'product-page:index'`, `'category-page:index'`
+
+### Creating a Product Template
+
+Product templates display individual product information.
+
+**File: `frontend/src/templates/ProductShowPage.astro`**
+
+```astro
 ---
+import AposLayout from '@apostrophecms/apostrophe-astro/components/layouts/AposLayout.astro';
+import AposArea from '@apostrophecms/apostrophe-astro/components/AposArea.astro';
+import { getAttachmentUrl } from '../lib/attachments.js';
+
+// Access the product data
+const { piece } = Astro.props.aposData;
+
+// Get the primary image
+const primaryImage = piece.images?.find(img => img.isPrimary) || piece.images?.[0];
+
+// Calculate starting price from variants
+const startingPrice = piece.variants?.length > 0
+  ? Math.min(...piece.variants.map(v => v.price))
+  : null;
+---
+
+<AposLayout title={piece.title} {...Astro.props}>
+  <Fragment slot="main">
+    <article class="product-page">
+      <h1>{piece.title}</h1>
+
+      <!-- Product Image -->
+      {primaryImage && (
+        <img
+          src={getAttachmentUrl(primaryImage.image?.items?.[0]?._image?.[0], { size: 'full' })}
+          alt={primaryImage.altText || piece.title}
+        />
+      )}
+
+      <!-- Description -->
+      {piece.description && <AposArea area={piece.description} />}
+
+      <!-- Specifications -->
+      {piece.specifications?.length > 0 && (
+        <dl>
+          {piece.specifications.map(spec => (
+            <>
+              <dt>{spec.key}</dt>
+              <dd>{spec.value}</dd>
+            </>
+          ))}
+        </dl>
+      )}
+
+      <!-- Variants -->
+      {piece.variants?.length > 0 && (
+        <div class="variants">
+          {startingPrice && <p>Starting at ${startingPrice.toFixed(2)}</p>}
+          {piece.variants.map(variant => (
+            <div class="variant">
+              <span>{variant.size} {variant.color}</span>
+              <span>${variant.price.toFixed(2)}</span>
+            </div>
+          ))}
+        </div>
+      )}
+
+      <!-- Dynamic Sections -->
+      {piece.sections && <AposArea area={piece.sections} />}
+    </article>
+  </Fragment>
+</AposLayout>
+```
+
+### Creating a Category Template
+
+Category templates display category information and fetch products.
+
+**File: `frontend/src/templates/CategoryShowPage.astro`**
+
+```astro
+---
+import AposLayout from '@apostrophecms/apostrophe-astro/components/layouts/AposLayout.astro';
+import AposArea from '@apostrophecms/apostrophe-astro/components/AposArea.astro';
+import { getAttachmentUrl } from '../lib/attachments.js';
+
+const { piece } = Astro.props.aposData;
+const categoryImage = piece.image?.items?.[0]?._image?.[0];
+
+// Fetch products for this category (max 8)
+const aposHost = import.meta.env.APOS_HOST || 'http://localhost:3000';
+const productsResponse = await fetch(
+  `${aposHost}/api/v1/product?_category=${piece._id}&perPage=8`
+);
+const productsData = await productsResponse.json();
+const products = productsData.results || [];
+---
+
+<AposLayout title={piece.title} {...Astro.props}>
+  <Fragment slot="main">
+    <article class="category-page">
+      <h1>{piece.title}</h1>
+
+      <!-- Category Image -->
+      {categoryImage && (
+        <img
+          src={getAttachmentUrl(categoryImage, { size: 'full' })}
+          alt={piece.title}
+        />
+      )}
+
+      <!-- Description -->
+      {piece.description && <AposArea area={piece.description} />}
+
+      <!-- Products Grid -->
+      {products.length > 0 && (
+        <div class="products-grid">
+          {products.map(product => (
+            <article class="product-card">
+              <a href={product._url}>
+                <h3>{product.title}</h3>
+                <!-- Add product image and pricing here -->
+              </a>
+            </article>
+          ))}
+        </div>
+      )}
+
+      <!-- Dynamic Sections -->
+      {piece.sections && <AposArea area={piece.sections} />}
+    </article>
+  </Fragment>
+</AposLayout>
+```
+
+### Linking Templates to Content
+
+Templates are automatically linked to content types through the template mapping file.
+
+**File: `frontend/src/templates/index.js`**
+
+```javascript
+import HomePage from './HomePage.astro';
+import ProductShowPage from './ProductShowPage.astro';
+import ProductIndexPage from './ProductIndexPage.astro';
+import CategoryShowPage from './CategoryShowPage.astro';
+import CategoryIndexPage from './CategoryIndexPage.astro';
+
+const templateComponents = {
+  '@apostrophecms/home-page': HomePage,
+  'product-page:show': ProductShowPage,    // Individual product
+  'product-page:index': ProductIndexPage,  // All products
+  'category-page:show': CategoryShowPage,  // Individual category
+  'category-page:index': CategoryIndexPage // All categories
+};
+
+export default templateComponents;
+```
+
+**How linking works:**
+
+1. **Backend Module Name**: `product` (piece type)
+2. **Page Type Module**: `product-page` (piece-page-type)
+3. **Template Keys**:
+   - `'product-page:show'` → Shows individual product
+   - `'product-page:index'` → Shows list of all products
+4. **URL Routing**: ApostropheCMS automatically handles routing
+   - `/products` → Index page (all products)
+   - `/products/my-product` → Show page (individual product)
+
+**Key Points:**
+
+- The template key format is `'{page-module-name}:{view-type}'`
+- `show` view is for individual items
+- `index` view is for lists
+- The module name must match the `pieceModuleName` in the page type
+- Templates are mapped in `frontend/src/templates/index.js`
+- No additional configuration needed - routing is automatic
+
+## 🧩 Widget System
+
+### Available Widgets
+
+This project includes 9 composable section widgets for building dynamic pages:
+
+**Content Widgets:**
+1. **Hero Section** - Large banner with background image, heading, and CTA
+2. **CTA Section** - Call-to-action block with message and button
+3. **Testimonials Section** - Customer testimonials with star ratings
+4. **FAQ Section** - Accordion-style frequently asked questions
+5. **Featured Content** - Content block with image and CTA
+
+**Product-Specific Widgets:**
+6. **Specifications Display** - Product specs in table/list/grid format
+7. **Image Gallery Section** - Image gallery with configurable columns
+8. **Related Products** - Show related products (auto or manual)
+9. **Product Grid** - Display products from current category
+
+### Creating Custom Widgets
+
+To create a new widget:
+
+#### 1. Create Backend Widget Module
+
+**File: `backend/modules/my-widget/index.js`**
+
+```javascript
+export default {
+  extend: '@apostrophecms/widget-type',
+  options: {
+    label: 'My Widget',
+    icon: 'star-icon',
+    description: 'Description of what this widget does'
+  },
+  fields: {
+    add: {
+      title: {
+        type: 'string',
+        label: 'Title',
+        required: true
+      },
+      content: {
+        type: 'area',
+        label: 'Content',
+        options: {
+          widgets: {
+            '@apostrophecms/rich-text': {}
+          }
+        }
+      },
+      visible: {
+        type: 'boolean',
+        label: 'Show this section',
+        def: true
+      }
+    }
+  }
+};
+```
+
+#### 2. Register the Widget Module
+
+**File: `backend/app.js`**
+
+```javascript
+export default apostrophe({
+  modules: {
+    // ... other modules
+    'my-widget': {}
+  }
+});
+```
+
+#### 3. Create Frontend Widget Component
+
+**File: `frontend/src/widgets/MyWidget.astro`**
+
+```astro
+---
+import AposArea from '@apostrophecms/apostrophe-astro/components/AposArea.astro';
+
+const { widget } = Astro.props;
+
+// Check visibility
+if (widget.visible === false) {
+  return null;
+}
+---
+
+<section class="my-widget">
+  <h2>{widget.title}</h2>
+  {widget.content && <AposArea area={widget.content} />}
+</section>
+
+<style>
+  .my-widget {
+    padding: 2rem;
+    margin-bottom: 2rem;
+  }
+</style>
+```
+
+#### 4. Register the Frontend Widget
+
+**File: `frontend/src/widgets/index.js`**
+
+```javascript
+import MyWidget from './MyWidget.astro';
+
+const widgetComponents = {
+  // ... other widgets
+  'my-widget': MyWidget  // Key must match backend module name (without -widget suffix)
+};
+
+export default widgetComponents;
+```
+
+#### 5. Add to Product/Category Sections
+
+**File: `backend/modules/product/index.js`** (or `category/index.js`)
+
+```javascript
+sections: {
+  type: 'area',
+  label: 'Page Sections',
+  options: {
+    expanded: true,
+    groups: {
+      content: {
+        label: 'Content Sections',
+        widgets: {
+          'my-widget': {},  // Add your widget here
+          // ... other widgets
+        }
+      }
+    }
+  }
+}
+```
+
+Now your widget will be available in the sections area for products and categories!
 
 ## 🏗️ Project Architecture
 
-### How It Works
-This project utilizes ApostropheCMS as a headless backend with Astro as a frontend. What sets this apart from typical headless setups is the [apostrophe-astro](https://github.com/apostrophecms/apostrophe-astro) package in the Astro frontend project. This enables full use of the ApostropheCMS Admin UI, including in-context editing, while largely automating content fetching from the backend without writing REST API calls.
-
 ### Project Structure
+
 ```
 ├── backend/               # ApostropheCMS application
-│   ├── modules/           # Custom modules (pages, pieces, widgets)
+│   ├── modules/
+│   │   ├── product/           # Product piece type
+│   │   ├── category/          # Category piece type
+│   │   ├── product-page/      # Product page type
+│   │   ├── category-page/     # Category page type
+│   │   └── *-widget/          # Widget modules (9 total)
 │   ├── app.js             # Main configuration
-│   ├── package.json       # ApostropheCMS-specific scripts
-│   └── ...
+│   └── package.json
 ├── frontend/              # Astro application
 │   ├── src/
-│   │   ├── pages/         # Single [...slug].astro route
-│   │   ├── templates/     # Page templates
-│   │   ├── widgets/       # Widget templates
-│   │   └── components/    # Astro components
-│   ├── astro.config.mjs   # Astro configuration
-│   ├── package.json       # Astro-specific scripts
-│   └── ...
-└── README.md              # This file
-└── package.json.          # Whole project scripts
+│   │   ├── pages/
+│   │   │   └── [...slug].astro    # Single catch-all route
+│   │   ├── templates/
+│   │   │   ├── index.js           # Template mapping
+│   │   │   ├── ProductShowPage.astro
+│   │   │   ├── CategoryShowPage.astro
+│   │   │   └── ...
+│   │   ├── widgets/
+│   │   │   ├── index.js           # Widget mapping
+│   │   │   └── *.astro            # Widget components (9 total)
+│   │   └── lib/
+│   │       └── attachments.js     # Image helper functions
+│   ├── astro.config.mjs
+│   └── package.json
+└── package.json           # Root package management
 ```
 
-### For ApostropheCMS Developers
+### Data Flow
 
-If you've worked with ApostropheCMS previously, the backend should look familiar. Custom modules for pages, pieces, and widgets are in the `modules` folder, with core module configuration in `modules/@apostrophecms`.
+1. **Backend**: ApostropheCMS stores products and categories in MongoDB
+2. **API**: REST API exposes content via `publicApiProjection`
+3. **Frontend**: Astro SSR fetches data via `aposPageFetch()` and direct API calls
+4. **Templates**: Page templates render product/category data
+5. **Widgets**: Composable widgets render dynamic sections
+6. **Editors**: Content editors use Admin UI to create and manage content
 
-**What stays the same:**
-- Module registration in `app.js`
-- Page types added to `modules/@apostrophecms/page/index.js`
-- Most [module configuration settings](https://docs.apostrophecms.org/reference/module-api/module-overview.html#module-configuration) for Admin UI, request routing, and MongoDB interaction
+### Key Concepts
 
-**Key differences:**
-- **No frontend code in modules** - Stylesheets, templates (implemented as Astro components), and client-side JavaScript go in the Astro project instead
-- **No template helpers** - Skip `helper()`, `extendHelpers()`, `components()`, and `renderRoutes()` functions
-- **Schema sharing** - Some widget schemas have been moved to `lib/schema-mixins` for reuse between widgets and pages
+**Draft/Publish Workflow:**
+- All changes are saved as drafts by default
+- Click **Publish** to make content live
+- Use **Save Draft** to save without publishing
+- Products and categories have `localized: true`, `autopublish: false`
 
-The `modules/@apostrophecms/home-page` module loads the core `views/layout.html` file, which has been modified to show project status information instead of the Admin UI.
+**Routing:**
+- Single `[...slug].astro` file handles all routes
+- ApostropheCMS manages URLs and routing automatically
+- Templates map to page types via `templates/index.js`
+- Product URLs: `/products/product-slug`
+- Category URLs: `/categories/category-slug`
 
-### For Astro Developers
-
-The Astro portion follows standard conventions with components in `src` and assets in `public`. Configuration is managed through `astro.config.mjs` following standard practices.
-
-**What stays the same:**
-- Standard Astro project organization
-- Normal component and template patterns
-- Client-side asset management
-
-**Key differences:**
-- **Single route system** - Instead of multiple routes in `pages`, there's one `[...slug].astro` file that handles all routing
-- **Template mapping** - Pages map to templates in the `templates` folder, mapped by the `index.js` file in that folder. Each template corresponds to an ApostropheCMS page type, including `index.html` and `show.html` piece-page types
-- **Widget system** - The `widgets` folder contains templates for ApostropheCMS widgets, mapped through an `index.js` file in that folder.
-- **Required configuration** - The `apostrophe` integration and `output: 'server'` settings must remain for backend integration
-
-### Routing and Templates
-
-Unlike typical Astro projects with multiple route files, this project uses a single `[...slug].astro` route that:
-
-1. Handles all URL routing using pages from the CMS backend
-2. Maps page types to corresponding templates in the `templates` folder
-3. Populates template content with data from the CMS
-4. Renders widgets using templates from the `widgets` folder
-
-Each page template corresponds to a registered ApostropheCMS page or piece-page type. Content is populated by data from the CMS backend and inserted into slots in the main `[...slug].astro` file. Widget data is handled through the mapped templates and added to page templates using the `AposArea` helper component.
-
-Read more in the [`apostrophe-astro` documentation](https://github.com/apostrophecms/apostrophe-astro)  or in the [Apollo tutorial series](https://docs.apostrophecms.org/tutorials/astro/apostrophecms-and-astro.html).
-
-### Widget Flexibility
-
-This architecture allows widget templates to be used outside specialized `area` schema fields, providing design flexibility without code repetition. However, this means widget schema fields for content must also be added to page schemas. The `backend/lib/schema-mixins` folder facilitates this by allowing schema imports in both widget modules and page templates.
-
-### Configuration Notes
-
-The `astro.config.mjs` includes required settings for ApostropheCMS integration:
-- `apostrophe` integration in the integrations array
-- `output: 'server'` for server-side rendering
-- Custom preprocessor options (this project uses a different SASS compiler for [Bulma CSS framework](https://bulma.io/) compatibility)
-
-Read more in the [`apostrophe-astro` documentation](https://github.com/apostrophecms/apostrophe-astro).
-
-## 🌟 Features & Widgets
-This project is more opinionated than some of our other project starter kits. It uses the [Bulma CSS framework](https://bulma.io/). For a more streamlined starting point you can use the [Astro Essentials starter kit](https://github.com/apostrophecms/starter-kit-astro-essentials) repository.
-
-### Widgets
-This project provides the core ApostropheCMS widgets, plus seven additional widgets:
-
-- Layout
-    - rows-widget: adds rows with varying numbers of columns for responsive content layout
-    - grid-layout-widget: adds custom or predefined CSS grid-based layouts
-- Content
-    - hero-widget: a customizable hero section with options for color gradient, image, or video backgrounds
-    - slideshow-widget: a customizable slideshow widget
-    - accordion-widget: adds an accordion for organizing content into collapsible sections
-    - card-widget: allows for the creation of multiple different customizable card-types
-    - link-widget: adds links that can be styled as text or a highly customizable button
-
-### Pieces
-This project creates two pieces. The first is an `article` piece for the creation of content pieces like blog posts or news articles. The second is an `author` piece that is used in relationship with the article pieces.
-
-### Pages
-This project creates core `default` and `@apostrophecms/home-page` pages. It also creates two pages for displaying the article pieces.
-
-The home-page has three potential layouts selected from the utility menus on the right-side of the page manager. The 'Minimal' layout inherits the header and footer components that is added to all the project pages. It also has a single area that can take any of the project widgets. The 'Foundation' layout adds a hero section at the top of the page, while the 'Showcase' adds a slideshow.
-
-The default page has a layout that is identical to the 'Minimal' home-page layout.
-
-Piece-type pages in ApostropheCMS only projects are used to either display multiple pieces (`index.html`) or individual pieces (`show.html`). This project has both types of pages, mapping the index of all pieces to the `ArticleIndexPage.astro` template and the display of the individual pieces to the `ArticleShowPage.astro` template. Both of these page types have three layouts for you to select from. Depending on the index layout, there are three or four additional areas for adding widgets with content before and after the piece content. The index page also demonstrates how to handle pagination in a hybrid project.
+**API Endpoints:**
+- Get products by category: `/api/v1/product?_category={categoryId}&perPage=8`
+- Get single product: `/api/v1/product/{productId}`
+- Get categories: `/api/v1/category`
+- All endpoints support filtering, sorting, and projection
 
 ## 🖼️ Image Helper Functions
 
-### Overview
-These helper functions are designed to work with images in your Astro frontend that come from ApostropheCMS through relationships or attachment fields. If you're using the image widget within an area, you should use the `AposArea` helper instead - these utilities are specifically for handling images that are part of your content model.
+### Core Functions
 
-**Important:** These helpers expect a single attachment object, not an array. When working with relationships or array fields, make sure to pass a single image object (e.g., `page.relationship._image[0]`) rather than the full array.
+**`getAttachmentUrl(imageObject, options)`**
+- Get URL for an image with optional size
+- Sizes: 'one-sixth', 'one-third', 'one-half', 'two-thirds', 'full', 'max', 'original'
+- Example: `getAttachmentUrl(image, { size: 'full' })`
 
-### Working with Image Relationships
-When you have a relationship field to `@apostrophecms/image` in your content type, you'll typically need to:
-1. Get the image URL (potentially at different sizes for responsive images)
-2. Handle focal points if configured
-3. Get the image dimensions including any cropping that should be applied
-4. Set up proper alt text
+**`getAttachmentSrcset(imageObject, options)`**
+- Generate responsive srcset string
+- Automatically includes all available sizes
+- Example: `getAttachmentSrcset(image)`
 
-Here's a typical example:
-```js
+**`getFocalPoint(imageObject, defaultValue)`**
+- Get focal point coordinates for CSS
+- Returns format: "X% Y%" (e.g., "50% 50%")
+- Default: "center center"
+
+**`getWidth(imageObject)` / `getHeight(imageObject)`**
+- Get image dimensions, respecting crops
+- Returns pixel values
+
+### Usage Example
+
+```astro
 ---
-import {
-  getAttachmentUrl,
-  getAttachmentSrcset,
-  getFocalPoint,
-  getWidth,
-  getHeight
-} from '../lib/attachments.js';
+import { getAttachmentUrl, getAttachmentSrcset, getFocalPoint } from '../lib/attachments.js';
 
-// Get first image from relationship
-const image = relationshipField._image[0];
+// From product images array
+const image = product.images[0].image?.items?.[0]?._image?.[0];
 ---
 
 <img
   src={getAttachmentUrl(image, { size: 'full' })}
   srcset={getAttachmentSrcset(image)}
   sizes="(max-width: 800px) 100vw, 800px"
-  alt={image.alt || image.title || 'Image description'}
-  width={getWidth(image)}
-  height={getHeight(image)}
+  alt={product.images[0].altText}
   style={`object-position: ${getFocalPoint(image)};`}
 />
 ```
 
-### Working with Direct Attachments
-For attachment fields (like logo fields), the pattern is similar:
-
-```js
-<img 
-  src={getAttachmentUrl(attachmentField)}
-  width={getWidth(attachmentField)}
-  height={getHeight(attachmentField)}
-  alt="Logo"
-/>
-```
-
-### Image Cropping and Sizes
-
-**Automatic Crop Handling**
-
-If you set a crop region for an image in the ApostropheCMS Admin UI, all the helper methods will automatically respect that crop. You don't need to do anything special in your code - the cropped version will be used when generating URLs and srcsets.
-
-**Size Variants**
-
-The default size variants are:
-- `one-sixth` (190×350px)
-- `one-third` (380×700px)
-- `one-half` (570×700px)
-- `two-thirds` (760×760px)
-- `full` (1140×1140px)
-- `max` (1600×1600px)
-
-These sizes will be used to generate the srcset and can be selected by name for the `getAttachmentUrl()` method:
-
-```
-getAttachmentUrl(image, { size: 'full' })
-```
-
-You can use custom size names in both `getAttachmentUrl()` and the srcset options. For example:
-```js
-const customUrl = getAttachmentUrl(image, { size: 'custom-banner' });
-
-// Custom srcset configuration
-const srcset = getAttachmentSrcset(image, {
-  sizes: [
-    { name: 'small', width: 300 },
-    { name: 'medium', width: 600 },
-    { name: 'large', width: 900 },
-  ]
-});
-```
-
-> Important: These helpers don't generate the image sizes - they just reference sizes that already exist. To use custom sizes, you must configure the [`@apostrophecms/attachment` module](https://docs.apostrophecms.org/reference/modules/attachment.html#configuration) to create those sizes when images are uploaded. You can do this in your backend configuration:
-
-```javascript
-// modules/@apostrophecms/attachment/index.js
-module.exports = {
-  options: {
-    // Define what sizes should be created on upload
-    imageSizes: {
-      'custom-banner': { width: 1200, height: 400 },
-      'square-thumb': { width: 300, height: 300 },
-      'small': { width: 300 },
-      'medium': { width: 600 },
-      'large': { width: 900 }
-    }
-  }
-};
-```
-
-See the [attachment module documentation](https://docs.apostrophecms.org/reference/modules/attachment.html#configuration) for complete configuration options.
-
-### Working with Focal Points
-When using focal points set in the ApostropheCMS admin UI, you'll need to:
-1. Use `object-position` with the focal point value
-2. Set appropriate Bulma image classes (like `is-fullwidth`)
-
-```js
-<figure class="image">
-  <img
-    src={getAttachmentUrl(image)}
-    style={`object-position: ${getFocalPoint(image)}; object-fit: cover;`}
-    class="is-fullwidth"
-    width={getWidth(image)}
-    height={getHeight(image)}
-    alt="Image with focal point"
-  />
-</figure>
-```
-
-The `getFocalPoint()` function returns coordinates in the format "X% Y%" (e.g., "50% 50%" for center). If no focal point is set, it returns the default value (default is "center center").
-
-### Core Functions Reference
-Key functions available (see JSDoc comments in source for detailed documentation):
-- `getAttachmentUrl(attachmentObject, options?)`: Get URL for an image with optional size (defaults to 'full')
-- `getAttachmentSrcset(attachmentObject, options?)`: Generate responsive srcset string
-- `getWidth(imageObject)`: Get image width, respecting crops
-- `getHeight(imageObject)`: Get image height, respecting crops
-- `getFocalPoint(attachmentObject, defaultValue?)`: Get focal point coordinates for styling
-
-## 🖌️ Theming
-
-Customizing the theme in this project is straightforward and leverages Bulma's powerful theming capabilities. You can override Bulma's default variables to match your brand or design requirements by editing the `frontend/src/styles/main.scss` file. This is done **before importing Bulma** so that your customizations are applied throughout the project.
-
-### Steps to Customize
-
-1. Navigate to the `frontend/src/styles/main.scss` file.
-2. Locate the section for overriding Bulma variables.
-3. Uncomment and modify the variables you wish to customize. You can define colors, typography, spacing, and more.
-4. Save your changes, and the updated theme will automatically apply when you rebuild the project.
-
-### Example: Overriding Common Variables
-
-Here's an example of how to customize some of Bulma's common variables. These variables are commented out by default. Uncomment and modify them as needed:
-
-```scss
-@use 'bulma/sass/utilities/initial-variables' as * with (
-  // Colors
-  $turquoise: hsl(171, 100%, 41%),   // Primary color
-  $cyan: hsl(204, 86%, 53%),         // Info color
-  $green: hsl(141, 71%, 48%),        // Success color
-  $yellow: hsl(48, 100%, 67%),       // Warning color
-  $red: hsl(348, 100%, 61%),         // Danger color
-
-  // Typography
-  $family-sans-serif: BlinkMacSystemFont, -apple-system, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", "Helvetica", "Arial", sans-serif,
-  $family-monospace: monospace,
-  $size-1: 3rem,
-  $size-2: 2.5rem,
-  $size-3: 2rem,
-  $size-4: 1.5rem,
-  $size-5: 1.25rem,
-  $size-6: 1rem
-);
-```
-
-### Full List of Variables
-For a comprehensive list of all customizable variables, refer to the [Bulma documentation](https://bulma.io/documentation/customize/list-of-sass-variables/) on variables. This resource provides details on all available options for customization, including advanced options for responsive breakpoints, spacing, and more.
-
-### Notes
-* **Order matters**: Ensure your variable overrides are declared before importing Bulma to avoid conflicts.
-* **SASS compatibility**: This setup uses the modern SASS syntax with @use and @forward. If you are unfamiliar with these concepts, refer to the SASS documentation for more information.
-* **Theme consistency**: To maintain a cohesive design, consider defining your core color palette and typography styles at the beginning of your project.
-
-### Troubleshooting
-If your changes are not reflected:
-
-* Ensure your variables are correctly uncommented and modified.
-* Check for any caching issues by clearing your browser cache or restarting the build process.
-
-## ⚙️ Package scripts
+## ⚙️ Package Scripts
 
 ### Root `package.json` scripts
 
-The root of the project has several useful scripts located in the `package.json` file. Running `npm run install` in the root directory will trigger the `postinstall` script. This will install the dependencies for both the ApostropheCMS and Astro projects. Similarly, `npm run update` will update dependencies for both the `frontend` and `backend` folders. The rest of the scripts in this file are primarily used for project deployment to ApostropheCMS hosting.
+- `npm install` - Installs dependencies for both frontend and backend
+- `npm run update` - Updates dependencies for both projects
+- `npm run load-starter-content` - Loads sample data (optional)
 
-### Frontend folder scripts
+### Frontend scripts (`cd frontend`)
 
-The main scripts for the Astro project located in the frontend folder are `dev`, `preview`, and `build`. These first two of these scripts will allow you to start the Astro server in either development or preview mode. The `build` script should be run prior to starting the server in preview mode. The remainder of the scripts are for deployment and may need to be altered to fit your hosting solution.
+- `npm run dev` - Start Astro development server (port 4321)
+- `npm run build` - Build for production
+- `npm run preview` - Preview production build
 
-### Backend folder scripts
+### Backend scripts (`cd backend`)
 
-Typically, you will only use the `dev` script in the backend folder outside of deployment. You can consult the [ApostropheCMS hosting](https://docs.apostrophecms.org/guide/hosting.html) recipes to see how these other scripts should be used.
+- `npm run dev` - Start ApostropheCMS development server (port 3000)
+- `npm run build` - Build assets for production
 
-## 🚀 Deploying to production
+## 🚀 Deploying to Production
 
-### **Using ApostropheCMS hosting (Recommended)**
+### Using ApostropheCMS Hosting (Recommended)
 
-ApostropheCMS can provide easy hosting for any ApostropheCMS-Astro monorepo with little or no extra configuration. This can be set up for deployment from Github or other code repository.
-
-ApostropheCMS hosting will automatically handle:
+ApostropheCMS hosting automatically handles:
 - Database provisioning and management
 - Asset storage and delivery
 - SSL certificate management
 - Automatic backups
 - Security updates
 
-In the future, we will be providing a path to create your own account and create a new hosted project. In the meantime, you can [learn more](https://apostrophecms.com/hosting) and [contact us](https://apostrophecms.com/contact-us) to get your hosting set up.
+[Learn more and contact us](https://apostrophecms.com/hosting) to get your hosting set up.
 
-### **Using 3rd-party hosting**
+### Using 3rd-Party Hosting
 
-Third-party hosting will typically require separate servers for the ApostropheCMS and Astro portions of the repositories. This is the typical pattern seen with other CMS that are used with Astro. You will need to specify whether you want the `backend` ApostropheCMS portion of the repo, or the `frontend` Astro project hosted. How this is accomplished will depend on the provider.
+Third-party hosting requires separate servers for backend and frontend.
 
-#### Backend (ApostropheCMS) Deployment
-
-Your ApostropheCMS backend requires:
-- Node.js environment (v20 or later recommended)
+**Backend Requirements:**
+- Node.js environment (v20+)
 - MongoDB database
-- Asset storage solution (cloud storage like AWS S3)
+- Asset storage (S3, etc.)
+- Environment variables:
+  ```bash
+  NODE_ENV=production
+  APOS_MONGODB_URI=your_connection_string
+  APOS_EXTERNAL_FRONT_KEY=random_string
+  APOS_S3_BUCKET=your-bucket
+  APOS_S3_SECRET=your-secret
+  APOS_S3_KEY=your-key
+  APOS_S3_REGION=your-region
+  ```
 
-There are several examples of common deployment strategies in our [documentation](https://docs.apostrophecms.org/guide/hosting.html)
+**Frontend Requirements:**
+- SSR-capable hosting (Netlify, Vercel, Cloudflare Pages)
+- Environment variables:
+  ```bash
+  APOS_HOST=your-backend-url
+  APOS_EXTERNAL_FRONT_KEY=same_random_string_as_backend
+  ```
 
-Example deployment steps for a typical provider:
-1. Set up a MongoDB instance (Atlas, DigitalOcean, etc.)
-2. Configure your server with Node.js and PM2
-3. Set up your environment variables:
-   ```bash
-   NODE_ENV=production
-   APOS_MONGODB_URI=YOUR_mongodb_connection_string
-   APOS_EXTERNAL_FRONT_KEY=a_random_string
-   APOS_S3_BUCKET=YOUR-bucket-name
-   APOS_S3_SECRET=YOUR-s3-secret
-   APOS_S3_KEY=YOUR-s3-key
-   APOS_S3_REGION=YOUR-chosen-region
-   ```
-The remainder of the deployment will depend on the hosting platform being used and how that deployment is triggered. Generally, it will comprise a build step followed by bringing up the server. If you are not deploying with Git, you will also need to set the `APOS_RELEASE_ID` to a unique, random value. Again, make sure that you specify that the `backend` folder is to be used as the root for your deployment.
-
-#### Frontend (Astro) Deployment
-
-Your Astro frontend can be deployed to any static hosting provider that supports SSR (Server-Side Rendering). Popular options include:
-- Netlify
-- Vercel
-- Cloudflare Pages
-- AWS Amplify
-There are a number of tutorials in the [Astro documentation](https://docs.astro.build/en/guides/deploy/#deployment-guides) to use as a starting point. The only modifications are the extra environment variable, `APOS_EXTERNAL_FRONT_KEY=a_random_string` set to the same string as your backend project, and to make sure that you are specifying the `frontend` folder as the root of the project.
-
-#### Netlify Deployment Example
-
-1. Log in to your [Netlify](https://www.netlify.com/) account.
-2. Create a new site by connecting your Git repository.
-3. In the "Build settings" configuration:
-   - **Base directory**: `frontend`
-   - **Build command**: `npm run build`
-   - **Publish directory**: `frontend/dist`
-4. Access Site Settings:
-   -Navigate to the "Site settings" for the selected site.
-5. Scroll down and find the "Environment variables" section under the "Build & deploy" tab. Click "Edit variables". Add a New Variable:
-   - **Key**: `APOS_EXTERNAL_FRONT_KEY`
-   - **Value**: `a_random_string`
-6. Save your configuration and deploy the site.
-
-The build settings can also be supplied through a `netlify.toml` file at the root of your project.
-
-## 💎 Ready for More?
-
-**Love what you see but need enterprise features?** This free Apollo starter kit is just the beginning. Upgrade to **Apollo Pro** to unlock powerful capabilities that will supercharge your content management and development workflow:
-
-### 🚀 **Apollo Pro Features**
-- **🔐 Advanced Permissions** - Granular access control and user groups for teams
-- **🌍 Automated Translation** - AI-powered translation with DeepL, Google Translate, and Azure
-- **🎨 Visual Design Tools** - In-context CSS customization with the Palette extension
-- **🔍 SEO Optimization** - AI-powered content optimization for better search rankings
-- **📝 Document Management** - Version control, templates, and audit trails
-- **👥 User Registration** - Self-service signup and account management
-
-**[Contact our team](https://apostrophecms.com/contact-us)** to learn more about Apollo Pro licensing and get access to enterprise-grade features that will accelerate your development and enhance your content management capabilities.
-
----
+See the [ApostropheCMS hosting documentation](https://docs.apostrophecms.org/guide/hosting.html) and [Astro deployment guides](https://docs.astro.build/en/guides/deploy/) for detailed instructions.
 
 ## 🚑 Need Help?
 
-- **Documentation**: Each feature includes comprehensive documentation and examples
-- **Community Support**: Join our [Discord community](https://discord.com/invite/HwntQpADJr) for help from other developers
-- **Professional Support**: Dedicated support packages available - [Contact us](https://apostrophecms.com/contact-us) to learn more
-- **Training**: Professional training and consultation services available
-
----
-
-## 📚 Learn More
-
-- **[ApostropheCMS Documentation](https://docs.apostrophecms.org/)** - Complete CMS guide
-- **[Astro Documentation](https://docs.astro.build/)** - Learn more about Astro
-- **[Astro + ApostropheCMS Guide](https://docs.astro.build/en/guides/cms/apostrophecms/)** - Integration details
-- **[Building a Site Tutorial](https://docs.apostrophecms.org/tutorials/astro/apostrophecms-and-astro.html)** - Building a complete site with the Apollo theme
-- **[apostrophe-astro Package](https://github.com/apostrophecms/apostrophe-astro)** - Bridge package docs
-
----
+- **Documentation**: [ApostropheCMS Docs](https://docs.apostrophecms.org/) | [Astro Docs](https://docs.astro.build/)
+- **Community Support**: Join our [Discord community](https://discord.com/invite/HwntQpADJr)
+- **Professional Support**: [Contact us](https://apostrophecms.com/contact-us) for dedicated support packages
+- **Tutorials**: [Building a Site with Apollo](https://docs.apostrophecms.org/tutorials/astro/apostrophecms-and-astro.html)
 
 ## License
 
