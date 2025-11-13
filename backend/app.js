@@ -30,6 +30,7 @@ export default apostrophe({
     // pieces
     category: {},
     product: {},
+    'product-variant': {},
 
     // pages
     'default-page': {},

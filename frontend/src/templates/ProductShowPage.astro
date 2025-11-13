@@ -7,8 +7,9 @@ const { piece } = Astro.props.aposData;
 const primaryImage = piece.images?.find(img => img.isPrimary) || piece.images?.[0];
 const otherImages = piece.images?.filter(img => !img.isPrimary) || [];
 const category = piece._category?.[0];
-const startingPrice = piece.variants?.length > 0
-  ? Math.min(...piece.variants.map(v => v.price))
+const variants = piece._variants || [];
+const startingPrice = variants.length > 0
+  ? Math.min(...variants.map(v => v.price))
   : null;
 ---
 
@@ -55,31 +56,13 @@ const startingPrice = piece.variants?.length > 0
             </div>
           )}
 
-          <!-- Product Options -->
-          {piece.productOptions?.length > 0 && (
-            <div class="product-options">
-              <h2>Available Options</h2>
-              <div class="options-list">
-                {piece.productOptions.map(option => {
-                  const values = option.values?.split(',').map(v => v.trim()).filter(v => v) || [];
-                  return (
-                    <div class="option">
-                      <strong>{option.name}:</strong>
-                      <span class="option-values">{values.join(', ')}</span>
-                    </div>
-                  );
-                })}
-              </div>
-            </div>
-          )}
-
           <!-- Variants Selector -->
-          {piece.variants?.length > 0 && (
+          {variants.length > 0 && (
             <div class="product-variants">
               <h2>Product Variants</h2>
               {startingPrice && <p class="starting-price">Starting at ${startingPrice.toFixed(2)}</p>}
               <div class="variants-list">
-                {piece.variants.map(variant => {
+                {variants.map(variant => {
                   const isAvailable = variant.available !== false;
                   const inStock = variant.quantity > 0;
                   const hasDiscount = variant.compareAtPrice && variant.compareAtPrice > variant.price;
@@ -268,37 +251,11 @@ const startingPrice = piece.variants?.length > 0
   }
 
   .product-description,
-  .product-options,
   .product-variants,
   .product-specs,
   .information-table,
   .product-features {
     margin-bottom: 2rem;
-  }
-
-  /* Product Options */
-  .options-list {
-    display: flex;
-    flex-direction: column;
-    gap: 0.75rem;
-    padding: 1rem;
-    background: #f5f5f5;
-    border-radius: 4px;
-  }
-
-  .option {
-    display: flex;
-    gap: 0.5rem;
-    align-items: baseline;
-  }
-
-  .option strong {
-    min-width: 100px;
-    color: #363636;
-  }
-
-  .option-values {
-    color: #4a4a4a;
   }
 
   /* Variants */

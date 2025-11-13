@@ -6,7 +6,7 @@ A production-ready template combining [ApostropheCMS](https://docs.apostrophecms
 
 ## ✨ What Makes This Special
 
-- **🛍️ Flexible Product System** - Rich product data with variants, specifications, and custom information tables
+- **🛍️ Flexible Product System** - Rich product data with centralized variants, specifications, and custom information tables
 - **📂 Hierarchical Categories** - Two-level category hierarchy with parent-child relationships
 - **🧩 Composable Widgets** - 9 section widgets for building custom product and category pages
 - **🚀 Headless CMS with Frontend Integration** - Full ApostropheCMS Admin UI with in-context editing
@@ -23,7 +23,7 @@ A production-ready template combining [ApostropheCMS](https://docs.apostrophecms
 - [📦 Product & Category System](#-product--category-system)
   - [Creating Products](#creating-products)
   - [Creating Categories](#creating-categories)
-  - [Using Product Variants](#using-product-variants)
+  - [Creating Product Variants](#creating-product-variants)
   - [Adding Dynamic Sections](#adding-dynamic-sections)
 - [🎨 Creating Templates](#-creating-templates)
   - [Understanding Templates](#understanding-templates)
@@ -119,32 +119,15 @@ Products are the main content type for your catalog. Each product can have rich 
 
 **Features**: Rich-text area for bullet points or feature descriptions
 
-#### Options & Variants
+#### Product Variants
 
-The flexible variant system uses a two-step process inspired by Shopify:
+Products use a centralized variant system where variants are defined once and then referenced by products.
 
-**Step 1: Define Product Options**
-- Click **Add Item** to define an option type (e.g., Size, Color, Material)
-- **Option Name**: The type of option (e.g., "Size", "Color", "Material")
-- **Option Values**: Comma-separated list of valid values
-  - Example for Size: "Small, Medium, Large, X-Large"
-  - Example for Color: "Red, Blue, Green, Black, White"
-  - Max 3 option types per product
-
-**Step 2: Create Variants**
-- Click **Add Item** to create each variant
-- **Option Values**: Add an option value for each option type
-  - **Option**: Must match a defined option name (e.g., "Size")
-  - **Value**: Must match a value from the option's list (e.g., "Small")
-  - Example: Size=Small + Color=Red
-- **Price**: Selling price for this variant (required)
-- **Compare At Price**: Original price (for showing discounts)
-- **SKU**: Stock Keeping Unit (required, must be unique)
-- **Barcode**: ISBN, UPC, GTIN for inventory management
-- **Stock Quantity**: Current inventory level
-- **Available for Purchase**: Uncheck to hide from customers
-- **Weight**: Weight in lbs for shipping calculations
-- **Requires Shipping**: Uncheck for digital products
+**To add variants to a product:**
+- In the **Product Variants** field group, click to select variants
+- Choose from pre-defined variants created in the Product Variants section
+- Multiple variants can be selected for each product
+- If the variant you need doesn't exist, create it first (see "Creating Product Variants" below)
 
 #### Page Sections
 - Add dynamic content widgets (Hero, CTA, Testimonials, FAQ, etc.)
@@ -182,60 +165,73 @@ Categories organize products into hierarchical groups (max 2 levels: parent → 
 
 4. Click **Save Draft** or **Publish**
 
-### Using Product Variants
+### Creating Product Variants
 
-The variant system follows a two-step process to make it easy for content editors to manage product options.
+Product variants are defined centrally and can be reused across multiple products. This prevents data entry errors and makes inventory management easier.
 
-#### Example: T-Shirt with Sizes and Colors
+**To create a variant:**
 
-**Step 1: Define Product Options**
+1. Go to **Product Variants** in the admin bar
+2. Click **New Product Variant**
+3. Fill in the variant information:
 
-Option 1:
-- Option Name: "Size"
-- Option Values: "Small, Medium, Large, X-Large"
+#### Basic Information
+- **Title**: Descriptive name for the variant (e.g., "T-Shirt - Small - Red")
+- **SKU**: Unique identifier (required) - e.g., "TSHIRT-SM-RED"
 
-Option 2:
-- Option Name: "Color"
-- Option Values: "Red, Blue, Green, Black, White"
+#### Option Values
+- Click **Add Item** to add option combinations
+- **Option Type**: e.g., "Size", "Color", "Material"
+- **Value**: e.g., "Small", "Red", "Cotton"
+- **Display Label**: Optional custom label for UI
+- Example: Size=Small + Color=Red defines this specific variant combination
 
-**Step 2: Create Variants**
+#### Pricing
+- **Price**: Selling price (required)
+- **Compare At Price**: Original price (for showing discounts)
 
-Variant 1:
+#### Inventory
+- **Barcode**: ISBN, UPC, GTIN for inventory management
+- **Stock Quantity**: Current inventory level
+- **Available for Purchase**: Uncheck to hide from customers
+
+#### Shipping
+- **Weight (lbs)**: For shipping calculations
+- **Requires Shipping**: Uncheck for digital products
+
+#### Media
+- **Variant Image**: Optional image specific to this variant
+
+4. Click **Save Draft** or **Publish**
+
+#### Example: T-Shirt Variants
+
+Create individual variants like:
+
+**Variant 1: Small Red T-Shirt**
+- Title: "T-Shirt - Small - Red"
+- SKU: "TSHIRT-SM-RED"
 - Option Values:
   - Size: Small
   - Color: Red
 - Price: $19.99
-- Compare At Price: $24.99 (20% discount)
-- SKU: "TSHIRT-SM-RED"
+- Compare At Price: $24.99
 - Stock Quantity: 50
 - Available: Yes
 - Weight: 0.5 lbs
 
-Variant 2:
+**Variant 2: Large Blue T-Shirt**
+- Title: "T-Shirt - Large - Blue"
+- SKU: "TSHIRT-LG-BLUE"
 - Option Values:
   - Size: Large
   - Color: Blue
 - Price: $22.99
-- SKU: "TSHIRT-LG-BLUE"
 - Stock Quantity: 0
 - Available: Yes
 - Weight: 0.6 lbs
 
-#### What Displays on the Product Page
-
-1. **Available Options Section**: Shows "Size: Small, Medium, Large, X-Large" and "Color: Red, Blue, Green, Black, White"
-
-2. **Product Variants Section**:
-   - "Starting at $19.99" (lowest variant price)
-   - Each variant displays:
-     - Option badges (e.g., "Size: Small", "Color: Red")
-     - Pricing with strikethrough for discounts
-     - Discount percentage badge
-     - SKU, barcode, and weight
-     - Stock status ("50 in stock", "Out of Stock", "Unavailable")
-     - Digital product badge if shipping not required
-
-This system provides content editors with clear guidance on what values are valid, while maintaining flexibility for different product types.
+After creating these variants, you can select them when editing any T-Shirt product. Multiple products can reference the same variants, and updating a variant automatically updates it across all products.
 
 ### Adding Dynamic Sections
 
@@ -295,9 +291,12 @@ const { piece } = Astro.props.aposData;
 // Get the primary image
 const primaryImage = piece.images?.find(img => img.isPrimary) || piece.images?.[0];
 
+// Get variants (populated relationship)
+const variants = piece._variants || [];
+
 // Calculate starting price from variants
-const startingPrice = piece.variants?.length > 0
-  ? Math.min(...piece.variants.map(v => v.price))
+const startingPrice = variants.length > 0
+  ? Math.min(...variants.map(v => v.price))
   : null;
 ---
 
@@ -329,33 +328,25 @@ const startingPrice = piece.variants?.length > 0
         </dl>
       )}
 
-      <!-- Product Options -->
-      {piece.productOptions?.length > 0 && (
-        <div class="options">
-          {piece.productOptions.map(option => {
-            const values = option.values?.split(',').map(v => v.trim()) || [];
-            return (
-              <p><strong>{option.name}:</strong> {values.join(', ')}</p>
-            );
-          })}
-        </div>
-      )}
-
       <!-- Variants -->
-      {piece.variants?.length > 0 && (
+      {variants.length > 0 && (
         <div class="variants">
           {startingPrice && <p>Starting at ${startingPrice.toFixed(2)}</p>}
-          {piece.variants.map(variant => {
+          {variants.map(variant => {
             const inStock = variant.quantity > 0;
+            const hasDiscount = variant.compareAtPrice && variant.compareAtPrice > variant.price;
             return (
               <div class="variant">
-                <div>
+                <div class="variant-info">
                   {variant.optionValues?.map(opt => (
-                    <span>{opt.optionName}: {opt.value}</span>
+                    <span class="option-badge">{opt.optionName}: {opt.value}</span>
                   ))}
                 </div>
-                <span>${variant.price.toFixed(2)}</span>
-                <span>{inStock ? `${variant.quantity} in stock` : 'Out of Stock'}</span>
+                <div class="variant-pricing">
+                  {hasDiscount && <span class="compare-price">${variant.compareAtPrice.toFixed(2)}</span>}
+                  <span class="price">${variant.price.toFixed(2)}</span>
+                </div>
+                <span class="stock">{inStock ? `${variant.quantity} in stock` : 'Out of Stock'}</span>
               </div>
             );
           })}
@@ -625,6 +616,7 @@ Now your widget will be available in the sections area for products and categori
 ├── backend/               # ApostropheCMS application
 │   ├── modules/
 │   │   ├── product/           # Product piece type
+│   │   ├── product-variant/   # Product variant piece type (centralized)
 │   │   ├── category/          # Category piece type
 │   │   ├── product-page/      # Product page type
 │   │   ├── category-page/     # Category page type
