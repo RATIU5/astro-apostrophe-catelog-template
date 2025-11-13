@@ -12,7 +12,8 @@ export default {
       description: 1,
       images: 1,
       specifications: 1,
-      informationTable: 1,
+      informationTableTitle: 1,
+      informationTableCsv: 1,
       features: 1,
       _variants: 1,
       _category: 1,
@@ -69,79 +70,20 @@ export default {
         }
       },
 
-      // Information Table (complex structure)
-      informationTable: {
-        type: 'object',
-        label: 'Information Table',
-        fields: {
-          add: {
-            tableTitle: {
-              type: 'string',
-              label: 'Table Title'
-            },
-            columnNames: {
-              type: 'array',
-              label: 'Column Names',
-              titleField: 'name',
-              inline: true,
-              fields: {
-                add: {
-                  name: {
-                    type: 'string',
-                    label: 'Column Name',
-                    required: true
-                  }
-                }
-              }
-            },
-            rowNames: {
-              type: 'array',
-              label: 'Row Names',
-              titleField: 'name',
-              inline: true,
-              fields: {
-                add: {
-                  name: {
-                    type: 'string',
-                    label: 'Row Name',
-                    required: true
-                  }
-                }
-              }
-            },
-            cellData: {
-              type: 'array',
-              label: 'Cell Values',
-              titleField: 'cellLabel',
-              fields: {
-                add: {
-                  rowIndex: {
-                    type: 'integer',
-                    label: 'Row Number',
-                    required: true,
-                    min: 0
-                  },
-                  columnIndex: {
-                    type: 'integer',
-                    label: 'Column Number',
-                    required: true,
-                    min: 0
-                  },
-                  value: {
-                    type: 'string',
-                    label: 'Cell Value',
-                    textarea: true
-                  },
-                  cellLabel: {
-                    type: 'string',
-                    label: 'Label (for UI)',
-                    def: 'Cell'
-                  }
-                }
-              }
-            }
-          }
-        }
+      // Information Table Title
+      informationTableTitle: {
+        type: 'string',
+        label: 'Information Table Title',
+        help: 'Optional title for the information table (e.g., "Size Chart")'
+      },
+
+      // Information Table CSV Input
+      informationTableCsv: {
+        type: 'string',
+        label: 'Information Table (CSV Format)',
+        help: 'Enter table data in CSV format. First row = column headers, First column = row headers. Example:\n,Small,Medium,Large\nChest (inches),34-36,38-40,42-44\nWaist (inches),28-30,32-34,36-38',
+        textarea: true,
+        htmlHelp: '<p>Enter table data in CSV format.</p><ul><li><strong>First row:</strong> Column headers</li><li><strong>First column:</strong> Row headers</li></ul><p><strong>Example:</strong></p><pre>,Small,Medium,Large\nChest (inches),34-36,38-40,42-44\nWaist (inches),28-30,32-34,36-38</pre>'
       },
 
       // Features (rich text)
@@ -201,7 +143,7 @@ export default {
       },
       details: {
         label: 'Product Details',
-        fields: ['specifications', 'informationTable', 'features']
+        fields: ['specifications', 'informationTableTitle', 'informationTableCsv', 'features']
       },
       variants: {
         label: 'Product Variants',
