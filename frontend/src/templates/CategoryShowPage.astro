@@ -58,28 +58,29 @@ const subCategoriesWithProducts = await Promise.all(
 
 <AposLayout title={piece.title} {...Astro.props}>
   <Fragment slot="main">
-    <article class="category-page">
+    <article class="max-w-7xl mx-auto px-4 py-8">
       <!-- Category Header -->
-      <header class="category-header">
+      <header class="mb-12">
         {categoryImage && (
-          <div class="category-hero-image">
+          <div class="w-full h-96 overflow-hidden rounded-lg mb-8">
             <img
               src={getAttachmentUrl(categoryImage, { size: 'full' })}
               alt={piece.title}
+              class="w-full h-full object-cover"
             />
           </div>
         )}
-        <div class="category-intro">
-          <h1>{piece.title}</h1>
+        <div>
+          <h1 class="text-4xl mb-4">{piece.title}</h1>
           {parentCategory && (
-            <nav class="breadcrumb" aria-label="breadcrumbs">
-              <a href={parentCategory._url}>{parentCategory.title}</a>
-              <span aria-hidden="true">›</span>
-              <span aria-current="page">{piece.title}</span>
+            <nav class="flex items-center gap-2 mb-6 text-sm" aria-label="breadcrumbs">
+              <a href={parentCategory._url} class="text-blue-600 hover:underline">{parentCategory.title}</a>
+              <span aria-hidden="true" class="text-gray-400">›</span>
+              <span aria-current="page" class="text-gray-500">{piece.title}</span>
             </nav>
           )}
           {piece.description && (
-            <div class="category-description">
+            <div class="text-lg leading-relaxed text-gray-700">
               <AposArea area={piece.description} />
             </div>
           )}
@@ -89,9 +90,9 @@ const subCategoriesWithProducts = await Promise.all(
       <!-- Sub-Categories with Products (if this is a parent category) -->
       {subCategoriesWithProducts.length > 0 && subCategoriesWithProducts.map(subCategory => (
         subCategory.products.length > 0 && (
-          <section class="products-grid">
-            <h2>{subCategory.title}</h2>
-            <div class="grid">
+          <section class="mb-12">
+            <h2 class="text-3xl mb-8">{subCategory.title}</h2>
+            <div class="grid grid-cols-[repeat(auto-fill,minmax(250px,1fr))] gap-8">
               {subCategory.products.map(product => {
                 const primaryImage = product.images?.find(img => img.isPrimary) || product.images?.[0];
                 const startingPrice = product.variants?.length > 0
@@ -99,20 +100,21 @@ const subCategoriesWithProducts = await Promise.all(
                   : null;
 
                 return (
-                  <article class="product-card">
-                    <a href={product._url}>
+                  <article class="border border-gray-300 rounded-lg overflow-hidden transition-all duration-200 hover:-translate-y-1 hover:shadow-lg">
+                    <a href={product._url} class="no-underline text-inherit block">
                       {primaryImage && (
-                        <div class="product-image">
+                        <div class="w-full h-64 overflow-hidden">
                           <img
                             src={getAttachmentUrl(primaryImage.image?.items?.[0]?._image?.[0], { size: 'one-third' })}
                             alt={primaryImage.altText || product.title}
+                            class="w-full h-full object-cover"
                           />
                         </div>
                       )}
-                      <div class="product-details">
-                        <h3>{product.title}</h3>
+                      <div class="p-6">
+                        <h3 class="text-xl mb-2 text-gray-800">{product.title}</h3>
                         {startingPrice && (
-                          <p class="price">From ${startingPrice.toFixed(2)}</p>
+                          <p class="text-lg font-bold text-blue-600 m-0">From ${startingPrice.toFixed(2)}</p>
                         )}
                       </div>
                     </a>
@@ -126,9 +128,9 @@ const subCategoriesWithProducts = await Promise.all(
 
       <!-- Direct Products (if this is a leaf category with no sub-categories) -->
       {directProducts.length > 0 && (
-        <section class="products-grid">
-          <h2>Products</h2>
-          <div class="grid">
+        <section class="mb-12">
+          <h2 class="text-3xl mb-8">Products</h2>
+          <div class="grid grid-cols-[repeat(auto-fill,minmax(250px,1fr))] gap-8 md:gap-4 md:grid-cols-[repeat(auto-fill,minmax(200px,1fr))]">
             {directProducts.map(product => {
               const primaryImage = product.images?.find(img => img.isPrimary) || product.images?.[0];
               const startingPrice = product.variants?.length > 0
@@ -136,20 +138,21 @@ const subCategoriesWithProducts = await Promise.all(
                 : null;
 
               return (
-                <article class="product-card">
-                  <a href={product._url}>
+                <article class="border border-gray-300 rounded-lg overflow-hidden transition-all duration-200 hover:-translate-y-1 hover:shadow-lg">
+                  <a href={product._url} class="no-underline text-inherit block">
                     {primaryImage && (
-                      <div class="product-image">
+                      <div class="w-full h-64 overflow-hidden">
                         <img
                           src={getAttachmentUrl(primaryImage.image?.items?.[0]?._image?.[0], { size: 'one-third' })}
                           alt={primaryImage.altText || product.title}
+                          class="w-full h-full object-cover"
                         />
                       </div>
                     )}
-                    <div class="product-details">
-                      <h3>{product.title}</h3>
+                    <div class="p-6">
+                      <h3 class="text-xl mb-2 text-gray-800">{product.title}</h3>
                       {startingPrice && (
-                        <p class="price">From ${startingPrice.toFixed(2)}</p>
+                        <p class="text-lg font-bold text-blue-600 m-0">From ${startingPrice.toFixed(2)}</p>
                       )}
                     </div>
                   </a>
@@ -162,149 +165,10 @@ const subCategoriesWithProducts = await Promise.all(
 
       <!-- Dynamic Sections -->
       {piece.sections && (
-        <div class="dynamic-sections">
+        <div class="mt-12">
           <AposArea area={piece.sections} />
         </div>
       )}
     </article>
   </Fragment>
 </AposLayout>
-
-<style>
-  .category-page {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 2rem 1rem;
-  }
-
-  .category-header {
-    margin-bottom: 3rem;
-  }
-
-  .category-hero-image {
-    width: 100%;
-    height: 400px;
-    overflow: hidden;
-    border-radius: 8px;
-    margin-bottom: 2rem;
-  }
-
-  .category-hero-image img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-  }
-
-  .category-intro h1 {
-    font-size: 2.5rem;
-    margin-bottom: 1rem;
-  }
-
-  .breadcrumb {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    margin-bottom: 1.5rem;
-    font-size: 0.9rem;
-  }
-
-  .breadcrumb a {
-    color: #3273dc;
-    text-decoration: none;
-  }
-
-  .breadcrumb a:hover {
-    text-decoration: underline;
-  }
-
-  .breadcrumb span[aria-current] {
-    color: #7a7a7a;
-  }
-
-  .category-description {
-    font-size: 1.1rem;
-    line-height: 1.6;
-    color: #4a4a4a;
-  }
-
-  .products-grid {
-    margin-bottom: 3rem;
-  }
-
-  .products-grid h2 {
-    font-size: 2rem;
-    margin-bottom: 2rem;
-  }
-
-  .products-grid .grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-    gap: 2rem;
-  }
-
-  .product-card {
-    border: 1px solid #dbdbdb;
-    border-radius: 8px;
-    overflow: hidden;
-    transition: transform 0.2s, box-shadow 0.2s;
-  }
-
-  .product-card:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  }
-
-  .product-card a {
-    text-decoration: none;
-    color: inherit;
-    display: block;
-  }
-
-  .product-image {
-    width: 100%;
-    height: 250px;
-    overflow: hidden;
-  }
-
-  .product-image img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-  }
-
-  .product-details {
-    padding: 1.5rem;
-  }
-
-  .product-details h3 {
-    font-size: 1.25rem;
-    margin-bottom: 0.5rem;
-    color: #363636;
-  }
-
-  .product-details .price {
-    font-size: 1.1rem;
-    font-weight: bold;
-    color: #3273dc;
-    margin: 0;
-  }
-
-  .dynamic-sections {
-    margin-top: 3rem;
-  }
-
-  @media (max-width: 768px) {
-    .category-intro h1 {
-      font-size: 2rem;
-    }
-
-    .category-hero-image {
-      height: 250px;
-    }
-
-    .products-grid .grid {
-      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-      gap: 1rem;
-    }
-  }
-</style>

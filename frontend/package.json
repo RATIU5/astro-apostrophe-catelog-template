@@ -30,6 +30,7 @@
     "vite": "^5.0.7"
   },
   "devDependencies": {
-    "sass-embedded": "^1.81.0"
+    "sass-embedded": "^1.81.0",
+    "tailwindcss": "^4.1.17"
   }
 }
