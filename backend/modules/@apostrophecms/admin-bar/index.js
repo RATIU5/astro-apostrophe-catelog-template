@@ -6,7 +6,8 @@ export default {
         label: 'Products',
         items: [
           'product',
-          'product-category'
+          'product-variant',
+          'category'
         ]
       },
       {
