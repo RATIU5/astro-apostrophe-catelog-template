@@ -14,6 +14,7 @@ export default {
       specifications: 1,
       informationTable: 1,
       features: 1,
+      productOptions: 1,
       variants: 1,
       _category: 1,
       sections: 1
@@ -177,46 +178,132 @@ export default {
         }
       },
 
-      // Variants array
+      // STEP 1: Define product options (Shopify-style)
+      productOptions: {
+        type: 'array',
+        label: 'Product Options',
+        help: 'Define option types like Size, Color, Material. Each variant will use combinations of these options.',
+        titleField: 'name',
+        inline: true,
+        style: 'table',
+        max: 3,  // Most products have 2-3 option types
+        fields: {
+          add: {
+            name: {
+              type: 'string',
+              label: 'Option Name',
+              help: 'e.g., "Size", "Color", "Material"',
+              required: true
+            },
+            values: {
+              type: 'string',
+              label: 'Option Values',
+              help: 'Comma-separated values. e.g., "Small, Medium, Large" or "Red, Blue, Green"',
+              required: true,
+              textarea: true
+            }
+          }
+        }
+      },
+
+      // STEP 2: Create product variants
       variants: {
         type: 'array',
         label: 'Product Variants',
+        help: 'Create a variant for each combination of options. Example: Size=Small + Color=Red',
         titleField: 'sku',
         fields: {
           add: {
-            size: {
-              type: 'string',
-              label: 'Size'
+            // Structured option values
+            optionValues: {
+              type: 'array',
+              label: 'Option Values',
+              help: 'Select the option and enter its value for this variant',
+              titleField: 'label',
+              inline: true,
+              style: 'table',
+              fields: {
+                add: {
+                  optionName: {
+                    type: 'string',
+                    label: 'Option',
+                    help: 'Must match an option name defined above (e.g., "Size", "Color")',
+                    required: true
+                  },
+                  value: {
+                    type: 'string',
+                    label: 'Value',
+                    help: 'Must match a value from the option above (e.g., "Small", "Red")',
+                    required: true
+                  },
+                  label: {
+                    type: 'string',
+                    label: 'Display Label',
+                    help: 'Auto-generated for UI: e.g., "Size: Small"'
+                  }
+                }
+              }
             },
-            color: {
-              type: 'string',
-              label: 'Color'
-            },
-            thickness: {
-              type: 'string',
-              label: 'Thickness'
-            },
-            otherOptions: {
-              type: 'string',
-              label: 'Other Options',
-              textarea: true
-            },
+
+            // Pricing
             price: {
               type: 'float',
               label: 'Price',
+              help: 'Selling price for this variant',
               required: true,
               min: 0
             },
+
+            compareAtPrice: {
+              type: 'float',
+              label: 'Compare At Price',
+              help: 'Original price (for showing discounts)',
+              min: 0
+            },
+
+            // SKU and inventory
             sku: {
               type: 'string',
               label: 'SKU',
+              help: 'Unique identifier for this variant. Example: PROD-SM-RED',
               required: true
             },
-            optionValues: {
+
+            barcode: {
               type: 'string',
-              label: 'Option Values',
-              textarea: true,
-              help: 'Comma-separated option values'
+              label: 'Barcode (ISBN, UPC, GTIN)',
+              help: 'Product barcode for inventory management'
+            },
+
+            quantity: {
+              type: 'integer',
+              label: 'Stock Quantity',
+              help: 'Current inventory level',
+              def: 0,
+              min: 0
+            },
+
+            // Availability
+            available: {
+              type: 'boolean',
+              label: 'Available for Purchase',
+              help: 'Uncheck to hide this variant from customers',
+              def: true
+            },
+
+            // Shipping
+            weight: {
+              type: 'float',
+              label: 'Weight (lbs)',
+              help: 'Used for shipping calculations',
+              min: 0
+            },
+
+            requiresShipping: {
+              type: 'boolean',
+              label: 'Requires Shipping',
+              def: true,
+              help: 'Uncheck for digital products'
             }
           }
         }
@@ -273,12 +360,141 @@ export default {
       },
       details: {
         label: 'Product Details',
-        fields: ['specifications', 'informationTable', 'features', 'variants']
+        fields: ['specifications', 'informationTable', 'features']
+      },
+      options: {
+        label: 'Options & Variants',
+        fields: ['productOptions', 'variants']
       },
       layout: {
         label: 'Page Layout',
         fields: ['sections']
       }
     }
+  },
+
+  // Helper methods for working with options and variants
+  methods(self) {
+    return {
+      // Parse comma-separated option values into array
+      getOptionValues(option) {
+        if (!option || !option.values) {
+          return [];
+        }
+        return option.values
+          .split(',')
+          .map(v => v.trim())
+          .filter(v => v);
+      },
+
+      // Get all options structured as objects
+      getOptionsStructured(product) {
+        if (!product.productOptions) {
+          return [];
+        }
+        return product.productOptions.map(option => ({
+          name: option.name,
+          values: self.getOptionValues(option)
+        }));
+      },
+
+      // Get variant options as an object for easier access
+      getVariantOptions(variant) {
+        if (!variant.optionValues) {
+          return {};
+        }
+        return variant.optionValues.reduce((acc, opt) => {
+          acc[opt.optionName] = opt.value;
+          return acc;
+        }, {});
+      },
+
+      // Format variant display name
+      getVariantDisplayName(variant) {
+        if (!variant.optionValues || variant.optionValues.length === 0) {
+          return variant.sku;
+        }
+        const optionStr = variant.optionValues
+          .map(opt => opt.value)
+          .join(' / ');
+        return optionStr;
+      },
+
+      // Calculate price range for a product
+      getPriceRange(product) {
+        const variants = (product.variants || []).filter(v => v.available !== false);
+
+        if (variants.length === 0) {
+          return null;
+        }
+
+        const prices = variants.map(v => v.price);
+        const min = Math.min(...prices);
+        const max = Math.max(...prices);
+
+        return {
+          min,
+          max,
+          formatted: min === max
+            ? `$${min.toFixed(2)}`
+            : `$${min.toFixed(2)} - $${max.toFixed(2)}`
+        };
+      },
+
+      // Validate that variant option values match defined product options
+      validateVariantOptions(product, variant) {
+        if (!variant.optionValues || variant.optionValues.length === 0) {
+          return { valid: true };
+        }
+
+        const productOptions = self.getOptionsStructured(product);
+        const errors = [];
+
+        variant.optionValues.forEach(optionValue => {
+          // Check if option name exists
+          const productOption = productOptions.find(
+            opt => opt.name === optionValue.optionName
+          );
+
+          if (!productOption) {
+            errors.push(
+              `Option "${optionValue.optionName}" is not defined in Product Options`
+            );
+            return;
+          }
+
+          // Check if value is valid for this option
+          const validValues = productOption.values;
+          if (!validValues.includes(optionValue.value)) {
+            errors.push(
+              `Value "${optionValue.value}" is not valid for option "${optionValue.optionName}". ` +
+              `Valid values are: ${validValues.join(', ')}`
+            );
+          }
+        });
+
+        return {
+          valid: errors.length === 0,
+          errors
+        };
+      },
+
+      // Get available variants (not hidden)
+      getAvailableVariants(product) {
+        return (product.variants || []).filter(v => v.available !== false);
+      },
+
+      // Find variant by SKU
+      findVariantBySku(product, sku) {
+        return (product.variants || []).find(v => v.sku === sku);
+      },
+
+      // Check if product has any in-stock variants
+      hasInStockVariants(product) {
+        return (product.variants || []).some(
+          v => v.available !== false && v.quantity > 0
+        );
+      }
+    };
   }
 };

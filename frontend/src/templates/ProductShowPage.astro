@@ -55,26 +55,83 @@ const startingPrice = piece.variants?.length > 0
             </div>
           )}
 
+          <!-- Product Options -->
+          {piece.productOptions?.length > 0 && (
+            <div class="product-options">
+              <h2>Available Options</h2>
+              <div class="options-list">
+                {piece.productOptions.map(option => {
+                  const values = option.values?.split(',').map(v => v.trim()).filter(v => v) || [];
+                  return (
+                    <div class="option">
+                      <strong>{option.name}:</strong>
+                      <span class="option-values">{values.join(', ')}</span>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          )}
+
           <!-- Variants Selector -->
           {piece.variants?.length > 0 && (
             <div class="product-variants">
-              <h2>Available Options</h2>
+              <h2>Product Variants</h2>
               {startingPrice && <p class="starting-price">Starting at ${startingPrice.toFixed(2)}</p>}
               <div class="variants-list">
-                {piece.variants.map(variant => (
-                  <div class="variant">
-                    <div class="variant-options">
-                      {variant.size && <span>Size: {variant.size}</span>}
-                      {variant.color && <span>Color: {variant.color}</span>}
-                      {variant.thickness && <span>Thickness: {variant.thickness}</span>}
-                      {variant.otherOptions && <span>{variant.otherOptions}</span>}
+                {piece.variants.map(variant => {
+                  const isAvailable = variant.available !== false;
+                  const inStock = variant.quantity > 0;
+                  const hasDiscount = variant.compareAtPrice && variant.compareAtPrice > variant.price;
+
+                  return (
+                    <div class={`variant ${!isAvailable ? 'unavailable' : ''} ${!inStock ? 'out-of-stock' : ''}`}>
+                      <div class="variant-info">
+                        <div class="variant-options">
+                          {variant.optionValues?.map(opt => (
+                            <span class="option-badge">{opt.optionName}: {opt.value}</span>
+                          ))}
+                        </div>
+                        <div class="variant-pricing">
+                          {hasDiscount && (
+                            <span class="compare-price">${variant.compareAtPrice.toFixed(2)}</span>
+                          )}
+                          <span class="price">${variant.price.toFixed(2)}</span>
+                          {hasDiscount && (
+                            <span class="discount-badge">
+                              {Math.round((1 - variant.price / variant.compareAtPrice) * 100)}% OFF
+                            </span>
+                          )}
+                        </div>
+                        <div class="variant-meta">
+                          <span class="sku">SKU: {variant.sku}</span>
+                          {variant.barcode && (
+                            <span class="barcode">Barcode: {variant.barcode}</span>
+                          )}
+                          {variant.weight && (
+                            <span class="weight">Weight: {variant.weight} lbs</span>
+                          )}
+                        </div>
+                      </div>
+                      <div class="variant-status">
+                        {!isAvailable && (
+                          <span class="status-badge unavailable">Unavailable</span>
+                        )}
+                        {isAvailable && !inStock && (
+                          <span class="status-badge out-of-stock">Out of Stock</span>
+                        )}
+                        {isAvailable && inStock && (
+                          <span class="status-badge in-stock">
+                            {variant.quantity} in stock
+                          </span>
+                        )}
+                        {variant.requiresShipping === false && (
+                          <span class="status-badge digital">Digital</span>
+                        )}
+                      </div>
                     </div>
-                    <div class="variant-details">
-                      <span class="price">${variant.price.toFixed(2)}</span>
-                      <span class="sku">SKU: {variant.sku}</span>
-                    </div>
-                  </div>
-                ))}
+                  );
+                })}
               </div>
             </div>
           )}
@@ -211,6 +268,7 @@ const startingPrice = piece.variants?.length > 0
   }
 
   .product-description,
+  .product-options,
   .product-variants,
   .product-specs,
   .information-table,
@@ -218,6 +276,32 @@ const startingPrice = piece.variants?.length > 0
     margin-bottom: 2rem;
   }
 
+  /* Product Options */
+  .options-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    padding: 1rem;
+    background: #f5f5f5;
+    border-radius: 4px;
+  }
+
+  .option {
+    display: flex;
+    gap: 0.5rem;
+    align-items: baseline;
+  }
+
+  .option strong {
+    min-width: 100px;
+    color: #363636;
+  }
+
+  .option-values {
+    color: #4a4a4a;
+  }
+
+  /* Variants */
   .starting-price {
     font-size: 1.25rem;
     font-weight: bold;
@@ -232,40 +316,141 @@ const startingPrice = piece.variants?.length > 0
   }
 
   .variant {
-    padding: 1rem;
-    border: 1px solid #dbdbdb;
-    border-radius: 4px;
+    padding: 1.25rem;
+    border: 2px solid #dbdbdb;
+    border-radius: 6px;
     display: flex;
     justify-content: space-between;
-    align-items: center;
+    align-items: flex-start;
+    background: white;
+    transition: border-color 0.2s;
+  }
+
+  .variant:hover {
+    border-color: #3273dc;
+  }
+
+  .variant.unavailable {
+    opacity: 0.6;
+    background: #f5f5f5;
+  }
+
+  .variant.out-of-stock {
+    border-color: #ff9800;
+  }
+
+  .variant-info {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
   }
 
   .variant-options {
     display: flex;
     flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .option-badge {
+    display: inline-block;
+    padding: 0.25rem 0.75rem;
+    background: #e8f4fd;
+    color: #3273dc;
+    border-radius: 4px;
+    font-size: 0.875rem;
+    font-weight: 500;
+  }
+
+  .variant-pricing {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+  }
+
+  .variant-pricing .price {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #363636;
+  }
+
+  .variant-pricing .compare-price {
+    font-size: 1.125rem;
+    color: #7a7a7a;
+    text-decoration: line-through;
+  }
+
+  .discount-badge {
+    display: inline-block;
+    padding: 0.25rem 0.5rem;
+    background: #48c774;
+    color: white;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    font-weight: bold;
+  }
+
+  .variant-meta {
+    display: flex;
+    flex-wrap: wrap;
     gap: 1rem;
+    font-size: 0.875rem;
+    color: #7a7a7a;
   }
 
-  .variant-options span {
-    font-size: 0.9rem;
+  .variant-meta .sku {
+    font-weight: 500;
+    color: #4a4a4a;
   }
 
-  .variant-details {
+  .variant-status {
     display: flex;
     flex-direction: column;
+    gap: 0.5rem;
     align-items: flex-end;
-    gap: 0.25rem;
   }
 
-  .variant-details .price {
-    font-size: 1.25rem;
-    font-weight: bold;
-    color: #3273dc;
+  .status-badge {
+    display: inline-block;
+    padding: 0.375rem 0.75rem;
+    border-radius: 4px;
+    font-size: 0.875rem;
+    font-weight: 600;
+    white-space: nowrap;
   }
 
-  .variant-details .sku {
-    font-size: 0.85rem;
+  .status-badge.in-stock {
+    background: #e8f5e9;
+    color: #2e7d32;
+  }
+
+  .status-badge.out-of-stock {
+    background: #fff3e0;
+    color: #e65100;
+  }
+
+  .status-badge.unavailable {
+    background: #f5f5f5;
     color: #7a7a7a;
+  }
+
+  .status-badge.digital {
+    background: #e3f2fd;
+    color: #1976d2;
+  }
+
+  @media (max-width: 768px) {
+    .variant {
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .variant-status {
+      align-items: flex-start;
+      flex-direction: row;
+      flex-wrap: wrap;
+    }
   }
 
   .specs-list {
