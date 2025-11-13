@@ -43,7 +43,7 @@ export default {
             label: {
               type: 'string',
               label: 'Display Label',
-              help: 'Optional custom display label'
+              help: 'Optional custom display label (e.g., "S" for Small)'
             }
           }
         }
@@ -79,19 +79,6 @@ export default {
         return variant.optionValues
           .map(opt => opt.value)
           .join(' / ');
-      },
-
-      // Check if variant is in stock
-      isInStock(variant) {
-        return variant.available !== false && variant.quantity > 0;
-      },
-
-      // Get discount percentage
-      getDiscountPercentage(variant) {
-        if (!variant.compareAtPrice || variant.compareAtPrice <= variant.price) {
-          return 0;
-        }
-        return Math.round((1 - variant.price / variant.compareAtPrice) * 100);
       },
 
       // Get option value by option name
