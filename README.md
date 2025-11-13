@@ -119,15 +119,32 @@ Products are the main content type for your catalog. Each product can have rich 
 
 **Features**: Rich-text area for bullet points or feature descriptions
 
-**Variants**: Product options with different pricing
-- Click **Add Item** to add a variant
-- **Size**: e.g., "Small", "Medium", "Large"
-- **Color**: e.g., "Red", "Blue", "Green"
-- **Thickness**: e.g., "Thin", "Standard", "Heavy"
-- **Other Options**: Additional options as text
-- **Price**: Variant price (required)
+#### Options & Variants
+
+The flexible variant system uses a two-step process inspired by Shopify:
+
+**Step 1: Define Product Options**
+- Click **Add Item** to define an option type (e.g., Size, Color, Material)
+- **Option Name**: The type of option (e.g., "Size", "Color", "Material")
+- **Option Values**: Comma-separated list of valid values
+  - Example for Size: "Small, Medium, Large, X-Large"
+  - Example for Color: "Red, Blue, Green, Black, White"
+  - Max 3 option types per product
+
+**Step 2: Create Variants**
+- Click **Add Item** to create each variant
+- **Option Values**: Add an option value for each option type
+  - **Option**: Must match a defined option name (e.g., "Size")
+  - **Value**: Must match a value from the option's list (e.g., "Small")
+  - Example: Size=Small + Color=Red
+- **Price**: Selling price for this variant (required)
+- **Compare At Price**: Original price (for showing discounts)
 - **SKU**: Stock Keeping Unit (required, must be unique)
-- **Option Values**: Comma-separated values for tracking
+- **Barcode**: ISBN, UPC, GTIN for inventory management
+- **Stock Quantity**: Current inventory level
+- **Available for Purchase**: Uncheck to hide from customers
+- **Weight**: Weight in lbs for shipping calculations
+- **Requires Shipping**: Uncheck for digital products
 
 #### Page Sections
 - Add dynamic content widgets (Hero, CTA, Testimonials, FAQ, etc.)
@@ -167,25 +184,58 @@ Categories organize products into hierarchical groups (max 2 levels: parent → 
 
 ### Using Product Variants
 
-Variants allow a single product to have multiple options with different pricing.
+The variant system follows a two-step process to make it easy for content editors to manage product options.
 
-**Example: T-Shirt with sizes and colors**
+#### Example: T-Shirt with Sizes and Colors
+
+**Step 1: Define Product Options**
+
+Option 1:
+- Option Name: "Size"
+- Option Values: "Small, Medium, Large, X-Large"
+
+Option 2:
+- Option Name: "Color"
+- Option Values: "Red, Blue, Green, Black, White"
+
+**Step 2: Create Variants**
 
 Variant 1:
-- Size: "Small"
-- Color: "Red"
-- Price: 19.99
+- Option Values:
+  - Size: Small
+  - Color: Red
+- Price: $19.99
+- Compare At Price: $24.99 (20% discount)
 - SKU: "TSHIRT-SM-RED"
+- Stock Quantity: 50
+- Available: Yes
+- Weight: 0.5 lbs
 
 Variant 2:
-- Size: "Large"
-- Color: "Blue"
-- Price: 22.99
+- Option Values:
+  - Size: Large
+  - Color: Blue
+- Price: $22.99
 - SKU: "TSHIRT-LG-BLUE"
+- Stock Quantity: 0
+- Available: Yes
+- Weight: 0.6 lbs
 
-The product page will display:
-- "Starting at $19.99" (lowest variant price)
-- All variants listed with their options and prices
+#### What Displays on the Product Page
+
+1. **Available Options Section**: Shows "Size: Small, Medium, Large, X-Large" and "Color: Red, Blue, Green, Black, White"
+
+2. **Product Variants Section**:
+   - "Starting at $19.99" (lowest variant price)
+   - Each variant displays:
+     - Option badges (e.g., "Size: Small", "Color: Red")
+     - Pricing with strikethrough for discounts
+     - Discount percentage badge
+     - SKU, barcode, and weight
+     - Stock status ("50 in stock", "Out of Stock", "Unavailable")
+     - Digital product badge if shipping not required
+
+This system provides content editors with clear guidance on what values are valid, while maintaining flexibility for different product types.
 
 ### Adding Dynamic Sections
 
@@ -279,16 +329,36 @@ const startingPrice = piece.variants?.length > 0
         </dl>
       )}
 
+      <!-- Product Options -->
+      {piece.productOptions?.length > 0 && (
+        <div class="options">
+          {piece.productOptions.map(option => {
+            const values = option.values?.split(',').map(v => v.trim()) || [];
+            return (
+              <p><strong>{option.name}:</strong> {values.join(', ')}</p>
+            );
+          })}
+        </div>
+      )}
+
       <!-- Variants -->
       {piece.variants?.length > 0 && (
         <div class="variants">
           {startingPrice && <p>Starting at ${startingPrice.toFixed(2)}</p>}
-          {piece.variants.map(variant => (
-            <div class="variant">
-              <span>{variant.size} {variant.color}</span>
-              <span>${variant.price.toFixed(2)}</span>
-            </div>
-          ))}
+          {piece.variants.map(variant => {
+            const inStock = variant.quantity > 0;
+            return (
+              <div class="variant">
+                <div>
+                  {variant.optionValues?.map(opt => (
+                    <span>{opt.optionName}: {opt.value}</span>
+                  ))}
+                </div>
+                <span>${variant.price.toFixed(2)}</span>
+                <span>{inStock ? `${variant.quantity} in stock` : 'Out of Stock'}</span>
+              </div>
+            );
+          })}
         </div>
       )}
 
