@@ -1,105 +1,311 @@
 ---
 import AposLayout from '@apostrophecms/apostrophe-astro/components/layouts/AposLayout.astro';
 import AposArea from '@apostrophecms/apostrophe-astro/components/AposArea.astro';
+import { getAttachmentUrl } from '../lib/attachments.js';
 
-const { piece: product } = Astro.props.aposData;
+const { piece } = Astro.props.aposData;
+const primaryImage = piece.images?.find(img => img.isPrimary) || piece.images?.[0];
+const otherImages = piece.images?.filter(img => !img.isPrimary) || [];
+const category = piece._category?.[0];
+const startingPrice = piece.variants?.length > 0
+  ? Math.min(...piece.variants.map(v => v.price))
+  : null;
 ---
 
-<AposLayout title={product.title} {...Astro.props}>
+<AposLayout title={piece.title} {...Astro.props}>
   <Fragment slot="main">
-    <article class="product-detail">
-      
-      <!-- Image Gallery -->
-      <div class="product-gallery">
-        {product._images?.map((image, index) => (
-          <img
-            src={image.attachment._urls['full']}
-            alt={image.alt || product.title}
-            class={index === 0 ? 'active' : ''}
-          />
-        ))}
-      </div>
+    <article class="product-page">
+      <!-- Product Header -->
+      <header class="product-header">
+        <h1>{piece.title}</h1>
+      </header>
 
-      <!-- Product Info -->
-      <div class="product-info">
-        <h1>{product.title}</h1>
-        
-        <!-- Description -->
-        <AposArea area={product.description} />
-
-        <!-- Features -->
-        {product.features?.length > 0 && (
-          <ul class="features">
-            {product.features.map(feature => (
-              <li>{feature.text}</li>
-            ))}
-          </ul>
-        )}
-
-        <!-- Variant Selector -->
-        
-      </div>
-
-      <!-- Dimensions Table -->
-      
-
-      <!-- Specifications -->
-      {product.specifications?.length > 0 && (
-        <section class="specifications">
-          <h2>Product Information</h2>
-          {product.specifications.map(group => (
-            <div class="spec-group">
-              <h3>{group.groupName}</h3>
-              {group.items?.map(item => (
-                <div class="spec-item">
-                  {item.label && <strong>{item.label}</strong>}
-                  <span>{item.value}</span>
-                </div>
+      <!-- Main Content Grid -->
+      <div class="product-content">
+        <!-- Image Gallery -->
+        <section class="product-gallery">
+          {primaryImage && (
+            <div class="primary-image">
+              <img
+                src={getAttachmentUrl(primaryImage.image?.items?.[0]?._image?.[0], { size: 'full' })}
+                alt={primaryImage.altText || piece.title}
+              />
+            </div>
+          )}
+          {otherImages.length > 0 && (
+            <div class="thumbnail-grid">
+              {otherImages.slice(0, 14).map(img => (
+                <img
+                  src={getAttachmentUrl(img.image?.items?.[0]?._image?.[0], { size: 'one-sixth' })}
+                  alt={img.altText || piece.title}
+                  class="thumbnail"
+                />
               ))}
             </div>
-          ))}
+          )}
         </section>
-      )}
 
+        <!-- Product Info -->
+        <section class="product-info">
+          <!-- Description -->
+          {piece.description && (
+            <div class="product-description">
+              <h2>Description</h2>
+              <AposArea area={piece.description} />
+            </div>
+          )}
+
+          <!-- Variants Selector -->
+          {piece.variants?.length > 0 && (
+            <div class="product-variants">
+              <h2>Available Options</h2>
+              {startingPrice && <p class="starting-price">Starting at ${startingPrice.toFixed(2)}</p>}
+              <div class="variants-list">
+                {piece.variants.map(variant => (
+                  <div class="variant">
+                    <div class="variant-options">
+                      {variant.size && <span>Size: {variant.size}</span>}
+                      {variant.color && <span>Color: {variant.color}</span>}
+                      {variant.thickness && <span>Thickness: {variant.thickness}</span>}
+                      {variant.otherOptions && <span>{variant.otherOptions}</span>}
+                    </div>
+                    <div class="variant-details">
+                      <span class="price">${variant.price.toFixed(2)}</span>
+                      <span class="sku">SKU: {variant.sku}</span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          <!-- Specifications -->
+          {piece.specifications?.length > 0 && (
+            <div class="product-specs">
+              <h2>Specifications</h2>
+              <dl class="specs-list">
+                {piece.specifications.map(spec => (
+                  <>
+                    <dt>{spec.key}</dt>
+                    <dd>{spec.value}</dd>
+                  </>
+                ))}
+              </dl>
+            </div>
+          )}
+
+          <!-- Information Table -->
+          {piece.informationTable?.tableTitle && (
+            <div class="information-table">
+              <h2>{piece.informationTable.tableTitle}</h2>
+              <table>
+                <thead>
+                  <tr>
+                    <th></th>
+                    {piece.informationTable.columnNames?.map(col => (
+                      <th>{col.name}</th>
+                    ))}
+                  </tr>
+                </thead>
+                <tbody>
+                  {piece.informationTable.rowNames?.map((row, rowIdx) => (
+                    <tr>
+                      <th>{row.name}</th>
+                      {piece.informationTable.columnNames?.map((col, colIdx) => {
+                        const cellData = piece.informationTable.cellData?.find(
+                          cell => cell.rowIndex === rowIdx && cell.columnIndex === colIdx
+                        );
+                        return <td>{cellData?.value || ''}</td>;
+                      })}
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          )}
+
+          <!-- Features -->
+          {piece.features && (
+            <div class="product-features">
+              <h2>Features</h2>
+              <AposArea area={piece.features} />
+            </div>
+          )}
+        </section>
+      </div>
+
+      <!-- Dynamic Sections (added by editors) -->
+      {piece.sections && (
+        <div class="dynamic-sections">
+          <AposArea area={piece.sections} />
+        </div>
+      )}
     </article>
   </Fragment>
 </AposLayout>
 
-<script>
-  // Variant selection logic
-  const form = document.querySelector('.variant-selector');
-  if (form) {
-    const variants = JSON.parse(form.dataset.productVariants);
-    const selects = form.querySelectorAll('[data-option]');
-    const priceEl = form.querySelector('[data-variant-price]');
-
-    function findVariant() {
-      const selected = {};
-      selects.forEach(sel => {
-        if (sel.value) selected[sel.name] = sel.value;
-      });
-
-      const allSelected = Array.from(selects).every(s => s.value);
-      if (!allSelected) return null;
-
-      return variants.find(v => 
-        Object.entries(selected).every(([key, val]) => 
-          v.options[key] === val
-        )
-      );
-    }
-
-    function update() {
-      const variant = findVariant();
-      
-      if (variant) {
-        priceEl.textContent = `$${variant.price.toFixed(2)}`;
-      } else {
-        priceEl.textContent = '';
-      }
-    }
-
-    selects.forEach(sel => sel.addEventListener('change', update));
-
+<style>
+  .product-page {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem 1rem;
   }
-</script>
+
+  .product-header {
+    margin-bottom: 2rem;
+  }
+
+  .product-header h1 {
+    font-size: 2.5rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .product-content {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+    margin-bottom: 3rem;
+  }
+
+  @media (max-width: 768px) {
+    .product-content {
+      grid-template-columns: 1fr;
+      gap: 2rem;
+    }
+  }
+
+  .product-gallery .primary-image {
+    width: 100%;
+    margin-bottom: 1rem;
+  }
+
+  .product-gallery .primary-image img {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+  }
+
+  .thumbnail-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+    gap: 0.5rem;
+  }
+
+  .thumbnail {
+    width: 100%;
+    height: 80px;
+    object-fit: cover;
+    border-radius: 4px;
+    cursor: pointer;
+    border: 2px solid transparent;
+  }
+
+  .thumbnail:hover {
+    border-color: #3273dc;
+  }
+
+  .product-info h2 {
+    font-size: 1.5rem;
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+  }
+
+  .product-description,
+  .product-variants,
+  .product-specs,
+  .information-table,
+  .product-features {
+    margin-bottom: 2rem;
+  }
+
+  .starting-price {
+    font-size: 1.25rem;
+    font-weight: bold;
+    color: #3273dc;
+    margin-bottom: 1rem;
+  }
+
+  .variants-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .variant {
+    padding: 1rem;
+    border: 1px solid #dbdbdb;
+    border-radius: 4px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .variant-options {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+
+  .variant-options span {
+    font-size: 0.9rem;
+  }
+
+  .variant-details {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 0.25rem;
+  }
+
+  .variant-details .price {
+    font-size: 1.25rem;
+    font-weight: bold;
+    color: #3273dc;
+  }
+
+  .variant-details .sku {
+    font-size: 0.85rem;
+    color: #7a7a7a;
+  }
+
+  .specs-list {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 0.5rem 1rem;
+  }
+
+  .specs-list dt {
+    font-weight: bold;
+  }
+
+  .specs-list dd {
+    margin: 0;
+  }
+
+  .information-table table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 1rem;
+  }
+
+  .information-table th,
+  .information-table td {
+    border: 1px solid #dbdbdb;
+    padding: 0.75rem;
+    text-align: left;
+  }
+
+  .information-table thead th {
+    background-color: #f5f5f5;
+    font-weight: bold;
+  }
+
+  .information-table tbody th {
+    background-color: #fafafa;
+    font-weight: bold;
+  }
+
+  .dynamic-sections {
+    margin-top: 3rem;
+  }
+</style>

@@ -8,6 +8,16 @@ import HeroWidget from './HeroWidget.astro';
 import LinkWidget from './LinkWidget.astro';
 import SlideshowWidget from './SlideshowWidget.astro';
 import RowsWidget from './RowsWidget.astro';
+// New section widgets
+import HeroSectionWidget from './HeroSectionWidget.astro';
+import CtaSectionWidget from './CtaSectionWidget.astro';
+import TestimonialsSectionWidget from './TestimonialsSectionWidget.astro';
+import FaqSectionWidget from './FaqSectionWidget.astro';
+import SpecificationsDisplayWidget from './SpecificationsDisplayWidget.astro';
+import ImageGallerySectionWidget from './ImageGallerySectionWidget.astro';
+import RelatedProductsWidget from './RelatedProductsWidget.astro';
+import ProductGridWidget from './ProductGridWidget.astro';
+import FeaturedContentWidget from './FeaturedContentWidget.astro';
 
 const widgetComponents = {
   '@apostrophecms/rich-text': RichTextWidget,
@@ -19,7 +29,17 @@ const widgetComponents = {
   'hero': HeroWidget,
   'link': LinkWidget,
   'slideshow': SlideshowWidget,
-  'rows': RowsWidget
+  'rows': RowsWidget,
+  // New section widgets
+  'hero-section': HeroSectionWidget,
+  'cta-section': CtaSectionWidget,
+  'testimonials-section': TestimonialsSectionWidget,
+  'faq-section': FaqSectionWidget,
+  'specifications-display': SpecificationsDisplayWidget,
+  'image-gallery-section': ImageGallerySectionWidget,
+  'related-products': RelatedProductsWidget,
+  'product-grid': ProductGridWidget,
+  'featured-content': FeaturedContentWidget
 };
 
 export default widgetComponents;

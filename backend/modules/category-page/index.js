@@ -5,8 +5,8 @@ export default {
   extend: '@apostrophecms/piece-page-type',
   options: {
     label: 'Category Page',
-    pieceModuleName: 'product-category', // Links to your product-category piece type
-    perPage: 12 // Products per page on index
+    pieceModuleName: 'category', // Links to your category piece type
+    perPage: 8 // Products per page on index
   },
   fields: {
     add: {

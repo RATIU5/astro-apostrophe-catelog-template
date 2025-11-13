@@ -28,7 +28,7 @@ export default apostrophe({
     '@apostrophecms/seo': {},
 
     // pieces
-    'product-category': {},
+    category: {},
     product: {},
 
     // pages
@@ -43,6 +43,16 @@ export default apostrophe({
     'hero-widget': {},
     'link-widget': {},
     'slideshow-widget': {},
-    'rows-widget': {}
+    'rows-widget': {},
+    // New section widgets
+    'hero-section-widget': {},
+    'cta-section-widget': {},
+    'testimonials-section-widget': {},
+    'faq-section-widget': {},
+    'specifications-display-widget': {},
+    'image-gallery-section-widget': {},
+    'related-products-widget': {},
+    'product-grid-widget': {},
+    'featured-content-widget': {}
   }
 });
