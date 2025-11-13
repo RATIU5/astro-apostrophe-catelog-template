@@ -7,18 +7,53 @@ const { piece } = Astro.props.aposData;
 const parentCategory = piece._parentCategory?.[0];
 const categoryImage = piece.image?.items?.[0]?._image?.[0];
 
-// Get products for this category (max 8)
 const aposHost = import.meta.env.APOS_HOST || 'http://localhost:3000';
-const productsResponse = await fetch(
-  `${aposHost}/api/v1/product?_category=${piece._id}&perPage=8`,
+
+// Check if this category has sub-categories
+const subCategoriesResponse = await fetch(
+  `${aposHost}/api/v1/category?_parentCategory=${piece._id}`,
   {
     headers: {
       'Content-Type': 'application/json'
     }
   }
 );
-const productsData = await productsResponse.json();
-const products = productsData.results || [];
+const subCategoriesData = await subCategoriesResponse.json();
+const subCategories = subCategoriesData.results || [];
+
+// If there are no sub-categories, get products for this category directly
+let directProducts = [];
+if (subCategories.length === 0) {
+  const productsResponse = await fetch(
+    `${aposHost}/api/v1/product?_category=${piece._id}`,
+    {
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    }
+  );
+  const productsData = await productsResponse.json();
+  directProducts = productsData.results || [];
+}
+
+// If there are sub-categories, fetch products for each sub-category
+const subCategoriesWithProducts = await Promise.all(
+  subCategories.map(async (subCategory) => {
+    const productsResponse = await fetch(
+      `${aposHost}/api/v1/product?_category=${subCategory._id}`,
+      {
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      }
+    );
+    const productsData = await productsResponse.json();
+    return {
+      ...subCategory,
+      products: productsData.results || []
+    };
+  })
+);
 ---
 
 <AposLayout title={piece.title} {...Astro.props}>
@@ -51,12 +86,50 @@ const products = productsData.results || [];
         </div>
       </header>
 
-      <!-- Products Grid -->
-      {products.length > 0 && (
+      <!-- Sub-Categories with Products (if this is a parent category) -->
+      {subCategoriesWithProducts.length > 0 && subCategoriesWithProducts.map(subCategory => (
+        subCategory.products.length > 0 && (
+          <section class="products-grid">
+            <h2>{subCategory.title}</h2>
+            <div class="grid">
+              {subCategory.products.map(product => {
+                const primaryImage = product.images?.find(img => img.isPrimary) || product.images?.[0];
+                const startingPrice = product.variants?.length > 0
+                  ? Math.min(...product.variants.map(v => v.price))
+                  : null;
+
+                return (
+                  <article class="product-card">
+                    <a href={product._url}>
+                      {primaryImage && (
+                        <div class="product-image">
+                          <img
+                            src={getAttachmentUrl(primaryImage.image?.items?.[0]?._image?.[0], { size: 'one-third' })}
+                            alt={primaryImage.altText || product.title}
+                          />
+                        </div>
+                      )}
+                      <div class="product-details">
+                        <h3>{product.title}</h3>
+                        {startingPrice && (
+                          <p class="price">From ${startingPrice.toFixed(2)}</p>
+                        )}
+                      </div>
+                    </a>
+                  </article>
+                );
+              })}
+            </div>
+          </section>
+        )
+      ))}
+
+      <!-- Direct Products (if this is a leaf category with no sub-categories) -->
+      {directProducts.length > 0 && (
         <section class="products-grid">
           <h2>Products</h2>
           <div class="grid">
-            {products.map(product => {
+            {directProducts.map(product => {
               const primaryImage = product.images?.find(img => img.isPrimary) || product.images?.[0];
               const startingPrice = product.variants?.length > 0
                 ? Math.min(...product.variants.map(v => v.price))

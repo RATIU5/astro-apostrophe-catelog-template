@@ -59,5 +59,20 @@ export default {
         fields: [ 'indexLayout' ]
       }
     }
+  },
+  handlers(self) {
+    return {
+      '@apostrophecms/page:beforeSend': {
+        // Disable the index page - redirect to home instead
+        async disableIndexPage(req) {
+          // Check if this is the index page (not a show page)
+          if (!req.data.piece) {
+            // This is the index page, redirect to home
+            req.redirect = '/';
+            req.statusCode = 301;
+          }
+        }
+      }
+    };
   }
 };
