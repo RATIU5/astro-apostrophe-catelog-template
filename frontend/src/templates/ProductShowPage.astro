@@ -2,6 +2,7 @@
 import AposLayout from '@apostrophecms/apostrophe-astro/components/layouts/AposLayout.astro';
 import AposArea from '@apostrophecms/apostrophe-astro/components/AposArea.astro';
 import { getAttachmentUrl } from '../lib/attachments.js';
+import { parseInformationTableCsv } from '../lib/csv-parser.js';
 
 const { piece } = Astro.props.aposData;
 const primaryImage = piece.images?.find(img => img.isPrimary) || piece.images?.[0];
@@ -10,6 +11,11 @@ const category = piece._category?.[0];
 const variants = piece._variants || [];
 const startingPrice = variants.length > 0
   ? Math.min(...variants.map(v => v.price))
+  : null;
+
+// Parse CSV information table if present
+const informationTable = piece.informationTableCsv
+  ? parseInformationTableCsv(piece.informationTableCsv, piece.informationTableTitle)
   : null;
 ---
 
@@ -134,25 +140,25 @@ const startingPrice = variants.length > 0
             </div>
           )}
 
-          <!-- Information Table -->
-          {piece.informationTable?.tableTitle && (
+          <!-- Information Table (parsed from CSV) -->
+          {informationTable && (
             <div class="information-table">
-              <h2>{piece.informationTable.tableTitle}</h2>
+              {informationTable.tableTitle && <h2>{informationTable.tableTitle}</h2>}
               <table>
                 <thead>
                   <tr>
                     <th></th>
-                    {piece.informationTable.columnNames?.map(col => (
+                    {informationTable.columnNames?.map(col => (
                       <th>{col.name}</th>
                     ))}
                   </tr>
                 </thead>
                 <tbody>
-                  {piece.informationTable.rowNames?.map((row, rowIdx) => (
+                  {informationTable.rowNames?.map((row, rowIdx) => (
                     <tr>
                       <th>{row.name}</th>
-                      {piece.informationTable.columnNames?.map((col, colIdx) => {
-                        const cellData = piece.informationTable.cellData?.find(
+                      {informationTable.columnNames?.map((col, colIdx) => {
+                        const cellData = informationTable.cellData?.find(
                           cell => cell.rowIndex === rowIdx && cell.columnIndex === colIdx
                         );
                         return <td>{cellData?.value || ''}</td>;
