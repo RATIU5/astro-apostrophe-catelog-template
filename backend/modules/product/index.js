@@ -36,32 +36,12 @@ export default {
 
       // Image array (max 15)
       images: {
-        type: 'array',
+        type: 'area',
         label: 'Product Images',
-        titleField: 'altText',
-        max: 15,
-        fields: {
-          add: {
-            image: {
-              type: 'area',
-              label: 'Image',
-              options: {
-                max: 1,
-                widgets: {
-                  '@apostrophecms/image': {}
-                }
-              }
-            },
-            altText: {
-              type: 'string',
-              label: 'Alt Text',
-              required: true
-            },
-            isPrimary: {
-              type: 'boolean',
-              label: 'Primary Image',
-              def: false
-            }
+        options: {
+          max: 15,
+          widgets: {
+            '@apostrophecms/image': {}
           }
         }
       },
@@ -188,14 +168,7 @@ export default {
             title: 1,
             sku: 1,
             optionValues: 1,
-            price: 1,
-            compareAtPrice: 1,
-            barcode: 1,
-            quantity: 1,
-            available: 1,
-            weight: 1,
-            requiresShipping: 1,
-            image: 1
+            price: 1
           }
         }
       },
@@ -214,32 +187,9 @@ export default {
             _url: 1
           }
         }
-      },
-
-      // Area for dynamic sections
-      sections: {
-        type: 'area',
-        label: 'Page Sections',
-        options: {
-          expanded: true,
-          groups: {
-            content: {
-              label: 'Content Sections',
-              widgets: {
-                'hero-section': {},
-                'testimonials-section': {},
-                'faq-section': {},
-                'specifications-display': {},
-                'image-gallery-section': {},
-                'cta-section': {},
-                'related-products': {}
-              },
-              columns: 2
-            }
-          }
-        }
       }
     },
+
     group: {
       basics: {
         label: 'Basic Information',
@@ -256,10 +206,6 @@ export default {
       variants: {
         label: 'Product Variants',
         fields: ['_variants']
-      },
-      layout: {
-        label: 'Page Layout',
-        fields: ['sections']
       }
     }
   },
@@ -296,13 +242,6 @@ export default {
       // Find variant by SKU
       findVariantBySku(product, sku) {
         return (product._variants || []).find(v => v.sku === sku);
-      },
-
-      // Check if product has any in-stock variants
-      hasInStockVariants(product) {
-        return (product._variants || []).some(
-          v => v.available !== false && v.quantity > 0
-        );
       },
 
       // Get lowest price from variants

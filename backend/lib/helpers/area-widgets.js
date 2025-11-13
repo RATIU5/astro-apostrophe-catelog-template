@@ -1,14 +1,5 @@
 // Define our available widgets grouped by type
 export const widgetGroups = {
-  // Layout widgets are structural elements that help organize content
-  layout: {
-    label: 'Layout',
-    columns: 2,
-    widgets: {
-      'grid-layout': {},
-      rows: {}
-    }
-  },
   // Content widgets are the actual content elements users can add
   content: {
     label: 'Content',
@@ -16,12 +7,7 @@ export const widgetGroups = {
     widgets: {
       '@apostrophecms/image': {},
       '@apostrophecms/video': {},
-      '@apostrophecms/rich-text': {},
-      slideshow: {},
-      hero: {},
-      accordion: {},
-      card: {},
-      link: {}
+      '@apostrophecms/rich-text': {}
     }
   }
 };
@@ -60,18 +46,6 @@ export const getWidgetGroups = ({
 } = {}) => {
   // Initialize our groups object
   const groups = {};
-
-  // Add layout widgets if requested
-  if (includeLayouts) {
-    groups.layout = {
-      ...widgetGroups.layout,
-      // Filter out any excluded widgets
-      widgets: Object.fromEntries(
-        Object.entries(widgetGroups.layout.widgets)
-          .filter(([ key ]) => !exclude.includes(key))
-      )
-    };
-  }
 
   // Always add content widgets
   groups.content = {
