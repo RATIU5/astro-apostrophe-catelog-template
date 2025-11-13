@@ -55,56 +55,6 @@ export default {
         help: 'Selling price for this variant',
         required: true,
         min: 0
-      },
-      compareAtPrice: {
-        type: 'float',
-        label: 'Compare at Price',
-        help: 'Original price (for showing discounts)',
-        min: 0
-      },
-      // Inventory
-      barcode: {
-        type: 'string',
-        label: 'Barcode',
-        help: 'ISBN, UPC, GTIN, or other barcode'
-      },
-      quantity: {
-        type: 'integer',
-        label: 'Stock Quantity',
-        help: 'Current inventory level',
-        def: 0,
-        min: 0
-      },
-      available: {
-        type: 'boolean',
-        label: 'Available for Purchase',
-        help: 'Uncheck to hide this variant from customers',
-        def: true
-      },
-      // Shipping
-      weight: {
-        type: 'float',
-        label: 'Weight (lbs)',
-        help: 'Weight in pounds for shipping calculations',
-        min: 0
-      },
-      requiresShipping: {
-        type: 'boolean',
-        label: 'Requires Shipping',
-        help: 'Uncheck for digital products',
-        def: true
-      },
-      // Optional image for this specific variant
-      image: {
-        type: 'area',
-        label: 'Variant Image',
-        help: 'Optional image specific to this variant',
-        max: 1,
-        options: {
-          widgets: {
-            '@apostrophecms/image': {}
-          }
-        }
       }
     },
     group: {
@@ -114,36 +64,11 @@ export default {
       },
       pricing: {
         label: 'Pricing',
-        fields: ['price', 'compareAtPrice']
-      },
-      inventory: {
-        label: 'Inventory',
-        fields: ['barcode', 'quantity', 'available']
-      },
-      shipping: {
-        label: 'Shipping',
-        fields: ['weight', 'requiresShipping']
-      },
-      media: {
-        label: 'Media',
-        fields: ['image']
+        fields: ['price']
       }
     }
   },
-  // Make all fields available via API
-  apiProjection: {
-    title: 1,
-    sku: 1,
-    optionValues: 1,
-    price: 1,
-    compareAtPrice: 1,
-    barcode: 1,
-    quantity: 1,
-    available: 1,
-    weight: 1,
-    requiresShipping: 1,
-    image: 1
-  },
+
   methods(self) {
     return {
       // Get display name for variant (e.g., "Small / Red")
