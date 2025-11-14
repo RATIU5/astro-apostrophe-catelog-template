@@ -47,7 +47,7 @@ export default {
         label: 'Category Page Sections',
         help: 'Add section widgets to customize this category page',
         options: getWidgetGroups({
-          includeGroups: ['categoryWidgets']
+          only: ['categoryWidgets']
         })
       },
 

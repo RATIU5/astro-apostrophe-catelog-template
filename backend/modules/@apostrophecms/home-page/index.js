@@ -12,7 +12,7 @@ export default {
         label: 'Home Page Sections',
         help: 'Add stacked section widgets to build your home page',
         options: getWidgetGroups({
-          includeGroups: ['homeWidgets']
+          only: ['homeWidgets']
         })
       }
     },

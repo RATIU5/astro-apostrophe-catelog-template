@@ -31,28 +31,30 @@ export const widgetGroups = {
 /**
  * Creates the groups configuration for ApostropheCMS widget areas
  * @param {Object} options - Configuration options
- * @param {boolean} options.includeLayouts - If true,
- *  includes layout widgets in the groups
+ * @param {boolean} options.includeLayouts - If true, includes layout widgets in the groups
  * @param {Array<string>} options.exclude - Array of widget names to exclude
- * @param {Array<string>} options.includeGroups - Array of group names to include (e.g., ['homeWidgets', 'categoryWidgets'])
+ * @param {Array<string>} options.only - If specified, only include these widget group names (e.g., ['homeWidgets'])
+
  * @returns {Object} Returns the groups configuration object
  *
  * @example
- * // In your page type or piece type:
+ * // Default content widgets:
  * fields: {
  *   add: {
  *     main: {
  *       type: 'area',
- *       options: {
- *         // Get grouped widgets configuration
- *         ...getWidgetGroups({
- *           includeLayouts: true,
- *           exclude: ['hero']
- *         }),
- *         // Add any additional area options
- *         max: 10,
- *         min: 1
- *       }
+ *       options: getWidgetGroups()
+ *     }
+ *   }
+ * }
+ *
+ * @example
+ * // Home page specific widgets only:
+ * fields: {
+ *   add: {
+ *     sections: {
+ *       type: 'area',
+ *       options: getWidgetGroups({ only: ['homeWidgets'] })
  *     }
  *   }
  * }
@@ -73,50 +75,40 @@ export const widgetGroups = {
 export const getWidgetGroups = ({
   includeLayouts = false,
   exclude = [],
-  includeGroups = null
+  only = null
 } = {}) => {
   // Initialize our groups object and widgets collection
   const groups = {};
   const widgets = {};
 
-  // If specific groups are requested, only include those
-  if (includeGroups && Array.isArray(includeGroups)) {
-    includeGroups.forEach(groupName => {
-      if (widgetGroups[groupName]) {
-        const filteredWidgets = Object.fromEntries(
-          Object.entries(widgetGroups[groupName].widgets)
-            .filter(([ key ]) => !exclude.includes(key))
-        );
+  // Determine which groups to include
+  const groupsToInclude = only && Array.isArray(only) && only.length > 0
+    ? only
+    : ['content']; // Default to content widgets
 
-        groups[groupName] = {
-          ...widgetGroups[groupName],
-          widgets: filteredWidgets
-        };
+  // Process each group
+  groupsToInclude.forEach(groupName => {
+    if (widgetGroups[groupName]) {
+      const filteredWidgets = Object.fromEntries(
+        Object.entries(widgetGroups[groupName].widgets)
+          .filter(([ key ]) => !exclude.includes(key))
+      );
 
-        // Add all widgets to the top-level widgets object
-        Object.assign(widgets, filteredWidgets);
-      }
-    });
-  } else {
-    // Default behavior: add content widgets
-    const filteredWidgets = Object.fromEntries(
-      Object.entries(widgetGroups.content.widgets)
-        .filter(([ key ]) => !exclude.includes(key))
-    );
+      groups[groupName] = {
+        ...widgetGroups[groupName],
+        widgets: filteredWidgets
+      };
 
-    groups.content = {
-      ...widgetGroups.content,
-      widgets: filteredWidgets
-    };
+      // Add to flat widgets list (required by AposArea)
+      Object.assign(widgets, filteredWidgets);
+    }
+  });
 
-    // Add all widgets to the top-level widgets object
-    Object.assign(widgets, filteredWidgets);
-  }
-
-  // Return expanded, widgets (for AposArea compatibility), and groups
+  // Return widgets (flat list), groups (organized), and expanded
+  // Both widgets and groups are required for ApostropheCMS areas
   return {
-    expanded: true,
     widgets,
-    groups
+    groups,
+    expanded: true
   };
 };
