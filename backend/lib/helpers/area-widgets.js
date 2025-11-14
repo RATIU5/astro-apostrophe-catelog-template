@@ -44,23 +44,29 @@ export const getWidgetGroups = ({
   includeLayouts = false,
   exclude = []
 } = {}) => {
-  // Initialize our groups object
+  // Initialize our groups object and widgets collection
   const groups = {};
+  const widgets = {};
 
   // Always add content widgets
+  const filteredContentWidgets = Object.fromEntries(
+    Object.entries(widgetGroups.content.widgets)
+      .filter(([ key ]) => !exclude.includes(key))
+  );
+
   groups.content = {
     ...widgetGroups.content,
-    // Filter out any excluded widgets
-    widgets: Object.fromEntries(
-      Object.entries(widgetGroups.content.widgets)
-        .filter(([ key ]) => !exclude.includes(key))
-    )
+    widgets: filteredContentWidgets
   };
 
-  // Return just the expanded and groups properties
-  // This allows other area options to be spread alongside it
+  // Add to flat widgets list (required by AposArea)
+  Object.assign(widgets, filteredContentWidgets);
+
+  // Return widgets (flat list), groups (organized), and expanded
+  // Both widgets and groups are required for ApostropheCMS areas
   return {
-    expanded: true,
-    groups
+    widgets,
+    groups,
+    expanded: true
   };
 };
