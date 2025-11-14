@@ -6,12 +6,13 @@ export default {
   },
   fields: {
     add: {
-      // Main Content Area - Available for all layouts
-      main: {
+      // Home Page Sections Area - Only allows home-specific widgets
+      sections: {
         type: 'area',
-        label: 'Main Content',
+        label: 'Home Page Sections',
+        help: 'Add stacked section widgets to build your home page',
         options: getWidgetGroups({
-          includeLayouts: true
+          only: ['homeWidgets']
         })
       }
     },
@@ -19,7 +20,7 @@ export default {
       content: {
         label: 'Content',
         fields: [
-          'main'
+          'sections'
         ]
       }
     }

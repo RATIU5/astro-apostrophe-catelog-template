@@ -1,0 +1,55 @@
+---
+import AposArea from '@apostrophecms/apostrophe-astro/components/AposArea.astro';
+
+const { widget } = Astro.props;
+const { title, description } = widget;
+---
+
+<div class="test-widget">
+  {title && (
+    <h2 class="test-widget__title">{title}</h2>
+  )}
+
+  {description && (
+    <div class="test-widget__description">
+      <AposArea area={description} />
+    </div>
+  )}
+</div>
+
+<style>
+  .test-widget {
+    padding: 2rem;
+    margin: 2rem 0;
+    border: 2px solid #e5e7eb;
+    border-radius: 0.5rem;
+    background: #f9fafb;
+  }
+
+  .test-widget__title {
+    margin: 0 0 1rem 0;
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #111827;
+  }
+
+  .test-widget__description {
+    color: #374151;
+    line-height: 1.6;
+  }
+
+  .test-widget__description :global(p) {
+    margin: 0.5rem 0;
+  }
+
+  .test-widget__description :global(ul),
+  .test-widget__description :global(ol) {
+    margin: 0.5rem 0;
+    padding-left: 1.5rem;
+  }
+
+  .test-widget__description :global(a) {
+    color: #2563eb;
+    text-decoration: underline;
+  }
+</style>
