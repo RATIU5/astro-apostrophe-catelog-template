@@ -218,6 +218,110 @@ export function getAttachmentSrcset(attachmentObject, options = {}) {
     .join(', ');
 }
 
+/**
+ * Get responsive image sources for different breakpoints
+ * @param {Object} imageObject - The full image object from ApostropheCMS
+ * @param {Object} [options={}] - Options object
+ * @param {Object} [options.breakpoints] - Custom breakpoint configuration
+ * @returns {Array} Array of source objects with media queries and srcset
+ */
+export function getResponsiveSources(imageObject, options = {}) {
+  if (!imageObject || !isSized(imageObject)) {
+    return [];
+  }
+
+  // Default breakpoint configuration
+  // Maps breakpoints to Apostrophe image sizes and provides srcset options
+  const defaultBreakpoints = {
+    mobile: {
+      maxWidth: 767,
+      sizes: ['one-third', 'one-half'], // 380w, 570w
+      defaultSize: 'one-half'
+    },
+    tablet: {
+      minWidth: 768,
+      maxWidth: 1279,
+      sizes: ['two-thirds', 'full'], // 760w, 1140w
+      defaultSize: 'full'
+    },
+    desktop: {
+      minWidth: 1280,
+      sizes: ['full', 'max'], // 1140w, 1600w
+      defaultSize: 'max'
+    }
+  };
+
+  const breakpoints = options.breakpoints || defaultBreakpoints;
+  const sources = [];
+
+  // Size name to width mapping
+  const sizeWidths = {
+    'one-sixth': 190,
+    'one-third': 380,
+    'one-half': 570,
+    'two-thirds': 760,
+    'full': 1140,
+    'max': 1600
+  };
+
+  // Generate sources for each breakpoint
+  Object.entries(breakpoints).forEach(([name, config]) => {
+    let media = '';
+
+    // Build media query
+    if (config.minWidth && config.maxWidth) {
+      media = `(min-width: ${config.minWidth}px) and (max-width: ${config.maxWidth}px)`;
+    } else if (config.minWidth) {
+      media = `(min-width: ${config.minWidth}px)`;
+    } else if (config.maxWidth) {
+      media = `(max-width: ${config.maxWidth}px)`;
+    }
+
+    // Build srcset for this breakpoint
+    const srcset = config.sizes
+      .map(sizeName => {
+        const width = sizeWidths[sizeName];
+        const url = getAttachmentUrl(imageObject, { size: sizeName });
+        return `${url} ${width}w`;
+      })
+      .join(', ');
+
+    sources.push({
+      media,
+      srcset,
+      // Provide a default src for browsers that don't support picture
+      src: getAttachmentUrl(imageObject, { size: config.defaultSize })
+    });
+  });
+
+  return sources;
+}
+
+/**
+ * Get sizes attribute value for responsive images
+ * This tells the browser what size the image will be at different breakpoints
+ * @param {Object} [options={}] - Options object
+ * @param {string} [options.mobile='100vw'] - Size at mobile breakpoint
+ * @param {string} [options.tablet='100vw'] - Size at tablet breakpoint
+ * @param {string} [options.desktop='100vw'] - Size at desktop breakpoint
+ * @returns {string} The sizes attribute value
+ */
+export function getSizesAttribute(options = {}) {
+  const {
+    mobile = '100vw',
+    tablet = '100vw',
+    desktop = '100vw'
+  } = options;
+
+  // Build sizes attribute
+  // Format: (media-query) size, (media-query) size, default-size
+  return [
+    `(min-width: 1280px) ${desktop}`,
+    `(min-width: 768px) ${tablet}`,
+    mobile
+  ].join(', ');
+}
+
 // Export the helper functions for use in components
 export {
   getFocalPoint,
