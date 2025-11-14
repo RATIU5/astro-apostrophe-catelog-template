@@ -6,8 +6,8 @@ export default {
   },
   fields: {
     add: {
-      // Home Page Sections Area - Only allows home-specific widgets
-      sections: {
+      // Main Content Area - Only allows home-specific widgets
+      main: {
         type: 'area',
         label: 'Home Page Sections',
         help: 'Add stacked section widgets to build your home page',
@@ -20,7 +20,7 @@ export default {
       content: {
         label: 'Content',
         fields: [
-          'sections'
+          'main'
         ]
       }
     }
