@@ -13,23 +13,17 @@ export default {
       masthead: {
         type: 'area',
         label: 'Masthead',
-        options: getWidgetGroups({
-          includeLayouts: true
-        })
+        options: getWidgetGroups()
       },
       beforeProducts: {
         type: 'area',
         label: 'Before Products Section',
-        options: getWidgetGroups({
-          includeLayouts: true
-        })
+        options: getWidgetGroups()
       },
       afterProducts: {
         type: 'area',
         label: 'After Products Section',
-        options: getWidgetGroups({
-          includeLayouts: true
-        })
+        options: getWidgetGroups()
       },
       indexLayout: {
         type: 'select',
