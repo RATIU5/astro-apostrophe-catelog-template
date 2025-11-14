@@ -22,6 +22,9 @@ export default apostrophe({
     '@apostrophecms/video-widget': {},
     '@apostrophecms/asset': {},
 
+    // Custom widgets
+    'test-widget': {},
+
     // Custom extensions
     // Make sure to set the `APOS_BASE_URL` environment variable to the base
     // URL of your Apostrophe site

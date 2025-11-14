@@ -1,4 +1,4 @@
-// Define our available widgets grouped by type
+// Define our available widgets grouped by type and page context
 export const widgetGroups = {
   // Content widgets are the actual content elements users can add
   content: {
@@ -9,6 +9,22 @@ export const widgetGroups = {
       '@apostrophecms/video': {},
       '@apostrophecms/rich-text': {}
     }
+  },
+  // Home page specific widgets
+  homeWidgets: {
+    label: 'Home Page Sections',
+    columns: 2,
+    widgets: {
+      'test': {}
+    }
+  },
+  // Category page specific widgets
+  categoryWidgets: {
+    label: 'Category Page Sections',
+    columns: 2,
+    widgets: {
+      'test': {}
+    }
   }
 };
 
@@ -18,6 +34,7 @@ export const widgetGroups = {
  * @param {boolean} options.includeLayouts - If true,
  *  includes layout widgets in the groups
  * @param {Array<string>} options.exclude - Array of widget names to exclude
+ * @param {Array<string>} options.includeGroups - Array of group names to include (e.g., ['homeWidgets', 'categoryWidgets'])
  * @returns {Object} Returns the groups configuration object
  *
  * @example
@@ -39,23 +56,53 @@ export const widgetGroups = {
  *     }
  *   }
  * }
+ *
+ * @example
+ * // For home page specific widgets:
+ * fields: {
+ *   add: {
+ *     sections: {
+ *       type: 'area',
+ *       options: getWidgetGroups({
+ *         includeGroups: ['homeWidgets']
+ *       })
+ *     }
+ *   }
+ * }
  */
 export const getWidgetGroups = ({
   includeLayouts = false,
-  exclude = []
+  exclude = [],
+  includeGroups = null
 } = {}) => {
   // Initialize our groups object
   const groups = {};
 
-  // Always add content widgets
-  groups.content = {
-    ...widgetGroups.content,
-    // Filter out any excluded widgets
-    widgets: Object.fromEntries(
-      Object.entries(widgetGroups.content.widgets)
-        .filter(([ key ]) => !exclude.includes(key))
-    )
-  };
+  // If specific groups are requested, only include those
+  if (includeGroups && Array.isArray(includeGroups)) {
+    includeGroups.forEach(groupName => {
+      if (widgetGroups[groupName]) {
+        groups[groupName] = {
+          ...widgetGroups[groupName],
+          // Filter out any excluded widgets
+          widgets: Object.fromEntries(
+            Object.entries(widgetGroups[groupName].widgets)
+              .filter(([ key ]) => !exclude.includes(key))
+          )
+        };
+      }
+    });
+  } else {
+    // Default behavior: add content widgets
+    groups.content = {
+      ...widgetGroups.content,
+      // Filter out any excluded widgets
+      widgets: Object.fromEntries(
+        Object.entries(widgetGroups.content.widgets)
+          .filter(([ key ]) => !exclude.includes(key))
+      )
+    };
+  }
 
   // Return just the expanded and groups properties
   // This allows other area options to be spread alongside it
