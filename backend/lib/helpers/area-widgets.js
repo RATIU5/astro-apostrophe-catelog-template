@@ -75,39 +75,48 @@ export const getWidgetGroups = ({
   exclude = [],
   includeGroups = null
 } = {}) => {
-  // Initialize our groups object
+  // Initialize our groups object and widgets collection
   const groups = {};
+  const widgets = {};
 
   // If specific groups are requested, only include those
   if (includeGroups && Array.isArray(includeGroups)) {
     includeGroups.forEach(groupName => {
       if (widgetGroups[groupName]) {
+        const filteredWidgets = Object.fromEntries(
+          Object.entries(widgetGroups[groupName].widgets)
+            .filter(([ key ]) => !exclude.includes(key))
+        );
+
         groups[groupName] = {
           ...widgetGroups[groupName],
-          // Filter out any excluded widgets
-          widgets: Object.fromEntries(
-            Object.entries(widgetGroups[groupName].widgets)
-              .filter(([ key ]) => !exclude.includes(key))
-          )
+          widgets: filteredWidgets
         };
+
+        // Add all widgets to the top-level widgets object
+        Object.assign(widgets, filteredWidgets);
       }
     });
   } else {
     // Default behavior: add content widgets
+    const filteredWidgets = Object.fromEntries(
+      Object.entries(widgetGroups.content.widgets)
+        .filter(([ key ]) => !exclude.includes(key))
+    );
+
     groups.content = {
       ...widgetGroups.content,
-      // Filter out any excluded widgets
-      widgets: Object.fromEntries(
-        Object.entries(widgetGroups.content.widgets)
-          .filter(([ key ]) => !exclude.includes(key))
-      )
+      widgets: filteredWidgets
     };
+
+    // Add all widgets to the top-level widgets object
+    Object.assign(widgets, filteredWidgets);
   }
 
-  // Return just the expanded and groups properties
-  // This allows other area options to be spread alongside it
+  // Return expanded, widgets (for AposArea compatibility), and groups
   return {
     expanded: true,
+    widgets,
     groups
   };
 };
