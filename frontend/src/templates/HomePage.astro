@@ -2,13 +2,15 @@
 import AposArea from '@apostrophecms/apostrophe-astro/components/AposArea.astro';
 
 const { page, user, query, global } = Astro.props.aposData;
-const { sections = {} } = page;
+const { sections } = page;
 ---
 <div class="main-content astro-hp-content">
   {/* Home Page Sections Area */}
-  <div class="home-sections">
-    <AposArea area={sections} />
-  </div>
+  {sections && (
+    <div class="home-sections">
+      <AposArea area={sections} />
+    </div>
+  )}
 </div>
 
 <style>
