@@ -2,6 +2,7 @@
 import AposLayout from '@apostrophecms/apostrophe-astro/components/layouts/AposLayout.astro';
 import AposArea from '@apostrophecms/apostrophe-astro/components/AposArea.astro';
 import { getAttachmentUrl } from '../lib/attachments.js';
+import ResponsiveImage from '../components/ResponsiveImage.astro';
 
 const { piece } = Astro.props.aposData;
 const parentCategory = piece._parentCategory?.[0];
@@ -54,6 +55,8 @@ const subCategoriesWithProducts = await Promise.all(
     };
   })
 );
+
+console.log(JSON.stringify(piece.image?.items?.[0], null, 2));
 ---
 
 <AposLayout title={piece.title} {...Astro.props}>
@@ -103,8 +106,8 @@ const subCategoriesWithProducts = await Promise.all(
                     <a href={product._url} class="no-underline text-inherit block">
                       {product.images?.items[0] && (
                         <div class="w-full h-64 overflow-hidden">
-                          <img
-                            src={getAttachmentUrl(product.images.items[0]._image?.[0], { size: 'one-third' })}
+                          <ResponsiveImage
+                            image={product.images.items[0]._image?.[0]}
                             alt={product.title}
                             class="w-full h-full object-cover"
                           />
@@ -141,8 +144,8 @@ const subCategoriesWithProducts = await Promise.all(
                   <a href={product._url} class="no-underline text-inherit block">
                     {primaryImage && (
                       <div class="w-full h-64 overflow-hidden">
-                        <img
-                          src={getAttachmentUrl(primaryImage._image?.[0], { size: 'one-third' })}
+                        <ResponsiveImage
+                          image={primaryImage._image?.[0]}
                           alt={primaryImage.altText || product.title}
                           class="w-full h-full object-cover"
                         />

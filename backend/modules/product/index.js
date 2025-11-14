@@ -70,13 +70,6 @@ export default {
         }
       },
 
-      // Information Table Title
-      informationTableTitle: {
-        type: 'string',
-        label: 'Information Table Title',
-        help: 'Optional title for the information table (e.g., "Size Chart")'
-      },
-
       // Information Table CSV Input
       informationTableCsv: {
         type: 'string',
@@ -143,7 +136,7 @@ export default {
       },
       details: {
         label: 'Product Details',
-        fields: ['specifications', 'informationTableTitle', 'informationTableCsv', 'features']
+        fields: ['specifications', 'informationTableCsv', 'features']
       },
       variants: {
         label: 'Product Variants',

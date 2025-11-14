@@ -42,7 +42,7 @@ export function parseInformationTableCsv(csvString, tableTitle = '') {
     for (let i = 0; i < line.length; i++) {
       const char = line[i];
 
-      if (char === '"') {
+      if (char === `'`) {
         inQuotes = !inQuotes;
       } else if (char === ',' && !inQuotes) {
         cells.push(currentCell.trim());

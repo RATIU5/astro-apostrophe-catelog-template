@@ -1,8 +1,8 @@
 ---
 import AposLayout from '@apostrophecms/apostrophe-astro/components/layouts/AposLayout.astro';
 import AposArea from '@apostrophecms/apostrophe-astro/components/AposArea.astro';
-import { getAttachmentUrl } from '../lib/attachments.js';
 import { parseInformationTableCsv } from '../lib/csv-parser.js';
+import ResponsiveImage from '../components/ResponsiveImage.astro';
 
 const { piece } = Astro.props.aposData;
 const images = piece.images?.items || [];
@@ -30,10 +30,10 @@ const informationTable = piece.informationTableCsv
         <!-- Image Gallery -->
         <section class="product-gallery">
           {images.length > 0 && (
-            <div class="thumbnail-grid">
+            <div class="">
               {images.slice(0, 14).map(img => (
-                <img
-                  src={getAttachmentUrl(img?._image?.[0], { size: 'full' })}
+                <ResponsiveImage
+                  image={img?._image?.[0]}
                   alt={img.altText || piece.title}
                   class="thumbnail"
                 />

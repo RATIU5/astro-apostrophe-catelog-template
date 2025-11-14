@@ -5,8 +5,8 @@ export default {
   extend: '@apostrophecms/piece-page-type',
   options: {
     label: 'Category Page',
-    pieceModuleName: 'category', // Links to your category piece type
-    perPage: 8 // Products per page on index
+    pieceModuleName: 'category',
+    perPage: 8
   },
   fields: {
     add: {
@@ -19,44 +19,23 @@ export default {
       },
       beforeProducts: {
         type: 'area',
-        label: 'Before Products Section',
+        label: 'Before Products Grid',
         options: getWidgetGroups({
           includeLayouts: true
         })
       },
       afterProducts: {
         type: 'area',
-        label: 'After Products Section',
+        label: 'After Products Grid',
         options: getWidgetGroups({
           includeLayouts: true
         })
-      },
-      indexLayout: {
-        type: 'select',
-        label: 'Product Grid Layout',
-        def: 'grid',
-        choices: [
-          {
-            label: 'Grid',
-            value: 'grid',
-            help: 'Products in grid layout'
-          },
-          {
-            label: 'List',
-            value: 'list',
-            help: 'Products in list layout'
-          }
-        ]
       }
     },
     group: {
       basics: {
         label: 'Basics',
         fields: [ 'masthead', 'beforeProducts', 'afterProducts' ]
-      },
-      utility: {
-        label: 'Display Options',
-        fields: [ 'indexLayout' ]
       }
     }
   }
