@@ -1,0 +1,178 @@
+---
+/**
+ * AposImage - Simplified wrapper for ResponsiveImage
+ *
+ * This component is a convenience wrapper around ResponsiveImage that
+ * automatically handles Apostrophe widget structure, making it even
+ * easier to use with image widgets and image relationships.
+ *
+ * Use this when you have an Apostrophe image widget or relationship
+ * and want the simplest possible API.
+ *
+ * @example With image widget:
+ * ```astro
+ * <AposImage widget={widget} />
+ * ```
+ *
+ * @example With image relationship:
+ * ```astro
+ * <AposImage image={page.heroImage} />
+ * ```
+ *
+ * @example With custom options:
+ * ```astro
+ * <AposImage
+ *   widget={widget}
+ *   sizes={{ mobile: '100vw', desktop: '50vw' }}
+ *   class="my-image"
+ * />
+ * ```
+ */
+
+import ResponsiveImage from './ResponsiveImage.astro';
+import type { ImageSizes, LinkOptions, Breakpoints } from './ResponsiveImage.astro';
+
+export interface Props {
+  /**
+   * Image widget object from Apostrophe area
+   * Contains _image array, caption, link options, etc.
+   */
+  widget?: any;
+
+  /**
+   * Direct image object (from relationship or _image[0])
+   * Can be the full image object or widget._image[0]
+   */
+  image?: any;
+
+  /**
+   * Override alt text (optional, uses image.alt by default)
+   */
+  alt?: string;
+
+  /**
+   * Override caption (optional, uses widget.caption by default)
+   */
+  caption?: string;
+
+  /**
+   * Custom CSS class for container
+   */
+  class?: string;
+
+  /**
+   * Custom CSS class for img element
+   */
+  imgClass?: string;
+
+  /**
+   * Custom sizes configuration
+   */
+  sizes?: ImageSizes;
+
+  /**
+   * Custom breakpoints configuration
+   */
+  breakpoints?: Breakpoints;
+
+  /**
+   * Loading behavior
+   */
+  loading?: 'lazy' | 'eager';
+
+  /**
+   * Decoding behavior
+   */
+  decoding?: 'async' | 'sync' | 'auto';
+
+  /**
+   * Force no link even if widget has link configured
+   */
+  noLink?: boolean;
+
+  /**
+   * Additional CSS classes from imageOptions (for widgets)
+   */
+  additionalClasses?: string;
+}
+
+const {
+  widget,
+  image: directImage,
+  alt,
+  caption,
+  class: containerClass = '',
+  imgClass = '',
+  sizes,
+  breakpoints,
+  loading = 'lazy',
+  decoding = 'async',
+  noLink = false,
+  additionalClasses = ''
+} = Astro.props;
+
+// Extract image from widget or use direct image
+let imageObj;
+if (widget) {
+  // Handle widget structure (has _image array)
+  imageObj = widget._image?.[0];
+} else if (directImage) {
+  // Handle direct image (could be from relationship)
+  // Check if it's already the image object or has _image array
+  if (directImage._image && Array.isArray(directImage._image)) {
+    imageObj = directImage._image[0];
+  } else {
+    imageObj = directImage;
+  }
+}
+
+// Extract caption from widget if not overridden
+const finalCaption = caption || widget?.caption;
+
+// Extract link from widget if not disabled
+let link: LinkOptions | undefined;
+if (widget && !noLink && widget.linkTo !== 'none') {
+  if (widget.linkTo === '_url') {
+    link = {
+      url: widget.linkHref,
+      title: widget.linkHrefTitle || widget.caption,
+      target: widget.linkTarget,
+      rel: widget.linkTarget === '_blank' ? 'noopener noreferrer' : undefined
+    };
+  } else if (widget.linkTo) {
+    // Handle relationship-based links
+    // The widget field name is prefixed with underscore
+    const fieldName = `_${widget.linkTo}`;
+    const linkedItem = widget[fieldName]?.[0];
+    if (linkedItem) {
+      link = {
+        url: linkedItem._url,
+        title: widget.linkTitle || linkedItem.title,
+      };
+    }
+  }
+}
+
+// Combine CSS classes
+const finalContainerClass = [
+  containerClass,
+  additionalClasses,
+  widget ? 'apos-image-widget' : ''
+].filter(Boolean).join(' ');
+
+// Extract alt text
+const finalAlt = alt || imageObj?.alt || imageObj?.attachment?._alt || '';
+---
+
+<ResponsiveImage
+  image={imageObj}
+  alt={finalAlt}
+  caption={finalCaption}
+  link={link}
+  class={finalContainerClass}
+  imgClass={imgClass}
+  sizes={sizes}
+  breakpoints={breakpoints}
+  loading={loading}
+  decoding={decoding}
+/>

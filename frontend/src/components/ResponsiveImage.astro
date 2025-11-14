@@ -1,0 +1,288 @@
+---
+/**
+ * ResponsiveImage component for ApostropheCMS
+ *
+ * A robust, composable component for rendering responsive images with automatic
+ * breakpoint handling. Supports mobile (< 768px), tablet (768-1280px), and
+ * desktop (>= 1280px) breakpoints.
+ *
+ * Features:
+ * - Automatic responsive image selection using <picture> element
+ * - Configurable breakpoints and image sizes
+ * - Focal point support (object-position)
+ * - Automatic crop handling
+ * - Layout shift prevention (width/height/aspect-ratio)
+ * - Lazy loading and async decoding
+ * - Optional caption and link wrapping
+ * - Full-width or custom sizing support
+ *
+ * @example Basic usage with default breakpoints:
+ * ```astro
+ * <ResponsiveImage image={widget._image[0]} alt="Product photo" />
+ * ```
+ *
+ * @example With caption and link:
+ * ```astro
+ * <ResponsiveImage
+ *   image={widget._image[0]}
+ *   caption="Our flagship product"
+ *   link={{ url: "/products/123", title: "View product" }}
+ * />
+ * ```
+ *
+ * @example Custom sizing (not full width):
+ * ```astro
+ * <ResponsiveImage
+ *   image={widget._image[0]}
+ *   sizes={{ mobile: '100vw', tablet: '50vw', desktop: '33vw' }}
+ * />
+ * ```
+ *
+ * @example Custom breakpoints:
+ * ```astro
+ * <ResponsiveImage
+ *   image={widget._image[0]}
+ *   breakpoints={{
+ *     mobile: { maxWidth: 640, sizes: ['one-third'], defaultSize: 'one-third' },
+ *     desktop: { minWidth: 641, sizes: ['full', 'max'], defaultSize: 'max' }
+ *   }}
+ * />
+ * ```
+ */
+
+import {
+  getAttachmentUrl,
+  getResponsiveSources,
+  getSizesAttribute,
+  getFocalPoint,
+  getWidth,
+  getHeight,
+} from '../lib/attachments.js';
+
+export interface ImageSizes {
+  mobile?: string;
+  tablet?: string;
+  desktop?: string;
+}
+
+export interface LinkOptions {
+  url: string;
+  title?: string;
+  target?: string;
+  rel?: string;
+}
+
+export interface BreakpointConfig {
+  minWidth?: number;
+  maxWidth?: number;
+  sizes: string[];
+  defaultSize: string;
+}
+
+export interface Breakpoints {
+  [key: string]: BreakpointConfig;
+}
+
+export interface Props {
+  /**
+   * Image object from ApostropheCMS (typically widget._image[0])
+   * Can also be a direct attachment object
+   */
+  image: any;
+
+  /**
+   * Alt text for the image. If not provided, uses image.alt from Apostrophe
+   */
+  alt?: string;
+
+  /**
+   * Optional caption displayed below the image
+   */
+  caption?: string;
+
+  /**
+   * Optional link to wrap the image
+   */
+  link?: LinkOptions;
+
+  /**
+   * CSS class(es) to apply to the container element
+   */
+  class?: string;
+
+  /**
+   * CSS class(es) to apply to the img element
+   */
+  imgClass?: string;
+
+  /**
+   * Custom breakpoint configuration
+   * Overrides default mobile/tablet/desktop breakpoints
+   */
+  breakpoints?: Breakpoints;
+
+  /**
+   * Sizes attribute configuration
+   * Tells browser what size the image will be at different breakpoints
+   * Defaults to '100vw' for all breakpoints (full width)
+   */
+  sizes?: ImageSizes;
+
+  /**
+   * Whether to use lazy loading (default: true)
+   */
+  loading?: 'lazy' | 'eager';
+
+  /**
+   * Whether to use async decoding (default: true)
+   */
+  decoding?: 'async' | 'sync' | 'auto';
+
+  /**
+   * Fallback image URL if no image is provided
+   */
+  placeholder?: string;
+}
+
+const {
+  image,
+  alt,
+  caption,
+  link,
+  class: containerClass = '',
+  imgClass = '',
+  breakpoints,
+  sizes,
+  loading = 'lazy',
+  decoding = 'async',
+  placeholder = '/images/image-widget-placeholder.jpg'
+} = Astro.props;
+
+// Handle missing image
+if (!image) {
+  console.warn('ResponsiveImage: No image provided, using placeholder');
+}
+
+const imageObj = image || null;
+const isPlaceholder = !imageObj;
+
+// Get responsive sources for different breakpoints
+const sources = isPlaceholder ? [] : getResponsiveSources(imageObj, { breakpoints });
+
+// Get fallback src (for browsers that don't support picture or for placeholder)
+const fallbackSrc = isPlaceholder
+  ? placeholder
+  : getAttachmentUrl(imageObj, { size: 'full' });
+
+// Get focal point for object-position
+const objectPosition = isPlaceholder ? 'center center' : getFocalPoint(imageObj);
+
+// Get dimensions to prevent layout shift
+const width = imageObj ? getWidth(imageObj) : undefined;
+const height = imageObj ? getHeight(imageObj) : undefined;
+const aspectRatio = width && height ? `${width}/${height}` : undefined;
+
+// Get alt text
+const altText = alt || imageObj?.alt || imageObj?.attachment?._alt || '';
+
+// Build sizes attribute for srcset
+const sizesAttr = sizes ? getSizesAttribute(sizes) : getSizesAttribute();
+
+// Build inline styles
+const imgStyle = `object-position: ${objectPosition};${aspectRatio ? ` --aspect-ratio: ${aspectRatio};` : ''}`;
+
+// Determine if we should wrap in a link
+const shouldLink = link && link.url;
+const linkRel = link?.target === '_blank' ? 'noopener noreferrer' : link?.rel;
+---
+
+<figure class={`responsive-image ${containerClass}`.trim()}>
+  {shouldLink && (
+    <a href={link.url} title={link.title} target={link.target} rel={linkRel}>
+      <picture>
+        {sources.map((source) => (
+          <source
+            media={source.media}
+            srcset={source.srcset}
+          />
+        ))}
+        <img
+          src={fallbackSrc}
+          alt={altText}
+          class={imgClass}
+          loading={loading}
+          decoding={decoding}
+          style={imgStyle}
+          width={width}
+          height={height}
+          sizes={sizesAttr}
+        />
+      </picture>
+    </a>
+  )}
+
+  {!shouldLink && (
+    <picture>
+      {sources.map((source) => (
+        <source
+          media={source.media}
+          srcset={source.srcset}
+        />
+      ))}
+      <img
+        src={fallbackSrc}
+        alt={altText}
+        class={imgClass}
+        loading={loading}
+        decoding={decoding}
+        style={imgStyle}
+        width={width}
+        height={height}
+        sizes={sizesAttr}
+      />
+    </picture>
+  )}
+
+  {caption && <figcaption class="responsive-image__caption">{caption}</figcaption>}
+</figure>
+
+<style>
+  .responsive-image {
+    margin: 0;
+    position: relative;
+  }
+
+  .responsive-image picture {
+    display: block;
+    width: 100%;
+  }
+
+  .responsive-image img {
+    width: 100%;
+    height: auto;
+    display: block;
+    object-fit: cover;
+  }
+
+  /* Maintain aspect ratio if provided */
+  .responsive-image img[style*="--aspect-ratio"] {
+    aspect-ratio: var(--aspect-ratio);
+  }
+
+  .responsive-image a {
+    display: block;
+    text-decoration: none;
+    transition: opacity 0.2s ease;
+  }
+
+  .responsive-image a:hover {
+    opacity: 0.9;
+  }
+
+  .responsive-image__caption {
+    margin-top: 0.5rem;
+    font-size: 0.875rem;
+    color: #666;
+    text-align: center;
+  }
+</style>
