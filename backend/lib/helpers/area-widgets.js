@@ -34,6 +34,7 @@ export const widgetGroups = {
  * @param {boolean} options.includeLayouts - If true, includes layout widgets in the groups
  * @param {Array<string>} options.exclude - Array of widget names to exclude
  * @param {Array<string>} options.only - If specified, only include these widget group names (e.g., ['homeWidgets'])
+
  * @returns {Object} Returns the groups configuration object
  *
  * @example
@@ -54,6 +55,19 @@ export const widgetGroups = {
  *     sections: {
  *       type: 'area',
  *       options: getWidgetGroups({ only: ['homeWidgets'] })
+ *     }
+ *   }
+ * }
+ *
+ * @example
+ * // For home page specific widgets:
+ * fields: {
+ *   add: {
+ *     sections: {
+ *       type: 'area',
+ *       options: getWidgetGroups({
+ *         includeGroups: ['homeWidgets']
+ *       })
  *     }
  *   }
  * }

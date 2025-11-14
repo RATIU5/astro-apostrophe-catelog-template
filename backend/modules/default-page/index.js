@@ -9,9 +9,7 @@ export default {
     add: {
       main: {
         type: 'area',
-        options: getWidgetGroups({
-          includeLayouts: true
-        })
+        options: getWidgetGroups()
       }
     },
     group: {
