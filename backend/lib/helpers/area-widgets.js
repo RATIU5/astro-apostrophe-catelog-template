@@ -15,7 +15,7 @@ export const widgetGroups = {
     label: 'Home Page Sections',
     columns: 2,
     widgets: {
-      'test': {}
+      test: {}
     }
   },
   // Category page specific widgets
@@ -23,7 +23,7 @@ export const widgetGroups = {
     label: 'Category Page Sections',
     columns: 2,
     widgets: {
-      'test': {}
+      test: {}
     }
   }
 };
@@ -73,7 +73,6 @@ export const widgetGroups = {
  * }
  */
 export const getWidgetGroups = ({
-  includeLayouts = false,
   exclude = [],
   only = null
 } = {}) => {
