@@ -94,7 +94,6 @@ const subCategoriesWithProducts = await Promise.all(
             <h2 class="text-3xl mb-8">{subCategory.title}</h2>
             <div class="grid grid-cols-[repeat(auto-fill,minmax(250px,1fr))] gap-8">
               {subCategory.products.map(product => {
-                const primaryImage = product.images?.find(img => img.isPrimary) || product.images?.[0];
                 const startingPrice = product.variants?.length > 0
                   ? Math.min(...product.variants.map(v => v.price))
                   : null;
@@ -102,11 +101,11 @@ const subCategoriesWithProducts = await Promise.all(
                 return (
                   <article class="border border-gray-300 rounded-lg overflow-hidden transition-all duration-200 hover:-translate-y-1 hover:shadow-lg">
                     <a href={product._url} class="no-underline text-inherit block">
-                      {primaryImage && (
+                      {product.images?.items[0] && (
                         <div class="w-full h-64 overflow-hidden">
                           <img
-                            src={getAttachmentUrl(primaryImage.image?.items?.[0]?._image?.[0], { size: 'one-third' })}
-                            alt={primaryImage.altText || product.title}
+                            src={getAttachmentUrl(product.images.items[0]._image?.[0], { size: 'one-third' })}
+                            alt={product.title}
                             class="w-full h-full object-cover"
                           />
                         </div>
@@ -132,7 +131,7 @@ const subCategoriesWithProducts = await Promise.all(
           <h2 class="text-3xl mb-8">Products</h2>
           <div class="grid grid-cols-[repeat(auto-fill,minmax(250px,1fr))] gap-8 md:gap-4 md:grid-cols-[repeat(auto-fill,minmax(200px,1fr))]">
             {directProducts.map(product => {
-              const primaryImage = product.images?.find(img => img.isPrimary) || product.images?.[0];
+              const primaryImage = product.images?.items[0];
               const startingPrice = product.variants?.length > 0
                 ? Math.min(...product.variants.map(v => v.price))
                 : null;
@@ -143,7 +142,7 @@ const subCategoriesWithProducts = await Promise.all(
                     {primaryImage && (
                       <div class="w-full h-64 overflow-hidden">
                         <img
-                          src={getAttachmentUrl(primaryImage.image?.items?.[0]?._image?.[0], { size: 'one-third' })}
+                          src={getAttachmentUrl(primaryImage._image?.[0], { size: 'one-third' })}
                           alt={primaryImage.altText || product.title}
                           class="w-full h-full object-cover"
                         />
