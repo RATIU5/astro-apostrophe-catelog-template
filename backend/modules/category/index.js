@@ -1,3 +1,5 @@
+import { getWidgetGroups } from '../../lib/helpers/area-widgets.js';
+
 export default {
   extend: '@apostrophecms/piece-type',
   options: {
@@ -9,7 +11,8 @@ export default {
       _url: 1,
       description: 1,
       image: 1,
-      _parentCategory: 1
+      _parentCategory: 1,
+      sections: 1
     }
   },
   fields: {
@@ -38,6 +41,16 @@ export default {
         }
       },
 
+      // Category Page Sections Area - Only allows category-specific widgets
+      sections: {
+        type: 'area',
+        label: 'Category Page Sections',
+        help: 'Add section widgets to customize this category page',
+        options: getWidgetGroups({
+          includeGroups: ['categoryWidgets']
+        })
+      },
+
       // Self-referencing relationship for hierarchy
       _parentCategory: {
         type: 'relationship',
@@ -57,6 +70,10 @@ export default {
       basics: {
         label: 'Basic Information',
         fields: ['title', 'description', 'image']
+      },
+      content: {
+        label: 'Page Content',
+        fields: ['sections']
       },
       hierarchy: {
         label: 'Category Hierarchy',
